@@ -76,15 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConvexHull.h" />
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="test.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="AlgorithmInfo.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Point.h" />
   </ItemGroup>

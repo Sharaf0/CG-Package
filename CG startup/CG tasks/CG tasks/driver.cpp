@@ -2,8 +2,10 @@
 #include <fstream>
 #include <CommDlg.h>
 #include <vector>
+
 #include "Point.h"
 #include "Line.h"
+#include "AlgorithmInfo.h"
 
 #include <gl/gl.h>
 #include <gl/glut.h>
@@ -11,38 +13,45 @@
 using namespace std;
 
 
-vector<Point> points;
-vector<Line> lines;
+vector<Point> inPoints, outPoints;
+vector<Line>  inLines , outLines;
+
+vector<AlgorithmInfo*> algorithms;
 
 #define POINT_MODE 1
 #define LINE_MODE  2
+
+#define DEFAULT_POINT_COLOR_R 0.0
+#define DEFAULT_POINT_COLOR_G 0.0
+#define DEFAULT_POINT_COLOR_B 0.0
+
+#define DEFAULT_LINE_COLOR_R 0.0
+#define DEFAULT_LINE_COLOR_G 0.0
+#define DEFAULT_LINE_COLOR_B 0.0
+
 
 int DRAWING_MODE;
 bool isDrawing;
 
 int width = 600;
 int height = 600;
-/**
-Draw all points, which we clicked on the screen.
-*/
-void drawPoints()
+
+void drawPoints(const vector<Point>& points, float r, float g, float b)
 {
-	glColor3f(0.0,0.0,0.0);
+	glColor3f(r,g,b);
 	glPointSize(5.0);
 	glBegin(GL_POINTS);
 	for(unsigned i = 0; i < points.size(); i ++)
 		glVertex2f(points[i].x, points[i].y);
 	glEnd();
 }
-/**
-Draw all lines, which we drawn with mouse.
-*/
-void drawLines()
+
+void drawLines(const vector<Line>& lines, float r, float g, float b)
 {
 	for(unsigned i = 0; i < lines.size(); i ++)
 	{
 		glBegin(GL_LINES);
-			glColor3f(0.0,0.0,0.0);
+			glColor3f(r,g,b);
 			glLineWidth(5.0);
 			glVertex2f(lines[i].start.x, lines[i].start.y);
 			glVertex2f(lines[i].end.x, lines[i].end.y);
@@ -56,8 +65,6 @@ string openFile()
 {
 	OPENFILENAME ofn;       // common dialog box structure
 	char szFile[260];       // buffer for file name
-	HWND hwnd;              // owner window
-	HANDLE hf;              // file handle
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = NULL;
@@ -100,10 +107,9 @@ void OnDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	SetTransformations();
 
-	drawPoints();
-	drawLines();
-	//force previously issued OpenGL commands to begin
-	//execution
+	drawPoints(inPoints,DEFAULT_POINT_COLOR_R,DEFAULT_POINT_COLOR_G,DEFAULT_POINT_COLOR_B);
+	drawLines(inLines,DEFAULT_LINE_COLOR_R,DEFAULT_LINE_COLOR_G,DEFAULT_LINE_COLOR_B);
+	//force previously issued OpenGL commands to begin execution
 	glFlush();
 }
 /**
@@ -124,13 +130,13 @@ void processMouse(int button, int state, int x, int y)
 	{
 		if(DRAWING_MODE == POINT_MODE)
 		{
-			points.push_back(Point(wx,wy));
+			inPoints.push_back(Point(wx,wy));
 		}
 		if(DRAWING_MODE == LINE_MODE)
 		{
 			if(isDrawing == false)
 			{
-				lines.push_back(Line(Point(wx,wy),Point(wx,wy)));
+				inLines.push_back(Line(Point(wx,wy),Point(wx,wy)));
 				isDrawing = true;
 			}
 		}
@@ -150,7 +156,7 @@ void processMouseMove(int x, int y)
 	float wy = height - y;
 	if(isDrawing)
 	{
-		lines[lines.size()-1].end = Point(wx,wy);
+		inLines[inLines.size()-1].end = Point(wx,wy);
 		OnDisplay();
 	}
 }
@@ -164,8 +170,8 @@ void processKeyboard(unsigned char key, int x, int y)
 {
 	if(key == ' ')
 	{
-		points.clear();
-		lines.clear();
+		inPoints.clear();
+		inLines.clear();
 		glClearColor(1,1,1,1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glFlush();
@@ -218,7 +224,7 @@ void openFileType(int choice)
 				return;
 			}
 			entries++;
-			points.push_back(temp);
+			inPoints.push_back(temp);
 		}
 		glFlush();
 	}
@@ -227,6 +233,8 @@ void openFileType(int choice)
 void mainMenu(int choice){}
 void runAlgorithms(int choice)
 {
+	algorithms[choice]->run(inPoints, inLines, outPoints, outLines);
+	//Todo: draw new points and lines
 }
 void initMenus()
 {
@@ -240,13 +248,13 @@ void initMenus()
 	glutAddMenuEntry("Points",0);
 	glutAddMenuEntry("Lines", 1);
 
-	convexHullSubmenu = glutCreateMenu(algorithmsSubmenu);
-
+	algorithmsSubmenu = glutCreateMenu(runAlgorithms);
+	for(unsigned i = 0; i < algorithms.size(); i ++)
+		glutAddMenuEntry(algorithms[i]->algorithmName.c_str(),i);
 
 	glutCreateMenu(mainMenu);
 	glutAddSubMenu("Drawing Mode", drawingSubmenu);
-	glutAddSubMenu("Convex Hull", convexHullSubmenu);
-	//glutAddSubMenu("Import",openFileSubmenu);
+	glutAddSubMenu("Run Algorithm", algorithmsSubmenu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 /**
