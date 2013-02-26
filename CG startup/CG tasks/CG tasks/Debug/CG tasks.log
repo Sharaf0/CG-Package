@@ -1,31 +1,37 @@
-﻿Build started 2/26/2013 12:54:53 AM.
+﻿Build started 2/26/2013 6:52:06 AM.
      1>Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Creating "Debug\CG tasks.unsuccessfulbuild" because "AlwaysCreate" was specified.
+         Touching "Debug\CG tasks.unsuccessfulbuild".
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ConvexHull.h driver.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Algorithm.h driver.cpp
          driver.cpp
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(86): warning C4390: ';' : empty controlled statement found; is this the intent?
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithmfactory.h(19): error C2259: 'CH_ExtremePoints' : cannot instantiate abstract class
+                 due to following members:
+                 'void Algorithm::run(std::vector<_Ty>,std::vector<Line> &,std::vector<_Ty> &,std::vector<Line> &)' : is abstract
+                 with
+                 [
+                     _Ty=Point
+                 ]
+                 c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithm.h(12) : see declaration of 'Algorithm::run'
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithmfactory.h(19): error C2248: 'CH_ExtremePoints::CH_ExtremePoints' : cannot access private member declared in class 'CH_ExtremePoints'
+                 c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_extremepoints.h(6) : see declaration of 'CH_ExtremePoints::CH_ExtremePoints'
+                 c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_extremepoints.h(4) : see declaration of 'CH_ExtremePoints'
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithmfactory.h(19): error C2243: 'type cast' : conversion from 'CH_ExtremePoints *' to 'Algorithm *' exists, but is inaccessible
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithmfactory.h(21): error C2259: 'CH_JarvisMarch' : cannot instantiate abstract class
+                 due to following members:
+                 'void Algorithm::run(std::vector<_Ty>,std::vector<Line> &,std::vector<_Ty> &,std::vector<Line> &)' : is abstract
+                 with
+                 [
+                     _Ty=Point
+                 ]
+                 c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithm.h(12) : see declaration of 'Algorithm::run'
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\algorithmfactory.h(21): error C2243: 'type cast' : conversion from 'CH_JarvisMarch *' to 'Algorithm *' exists, but is inaccessible
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(85): warning C4390: ';' : empty controlled statement found; is this the intent?
          Generating Code...
          Skipping... (no relevant changes detected)
-         ConvexHull.h
-       ManifestResourceCompile:
-         All outputs are up-to-date.
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Sh\CG-Package\CG startup\CG tasks\Debug\CG tasks.exe" /INCREMENTAL /NOLOGO opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\CG tasks.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Sh\CG-Package\CG startup\CG tasks\Debug\CG tasks.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Sh\CG-Package\CG startup\CG tasks\Debug\CG tasks.lib" /MACHINE:X86 "Debug\CG tasks.exe.embed.manifest.res"
-         Debug\ConvexHull.obj
-         Debug\driver.obj
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\CG tasks.exe.embed.manifest" /manifest "Debug\CG tasks.exe.intermediate.manifest"
-         All outputs are up-to-date.
-       LinkEmbedManifest:
-         All outputs are up-to-date.
-         CG tasks.vcxproj -> C:\Users\Sh\CG-Package\CG startup\CG tasks\Debug\CG tasks.exe
-       FinalizeBuildStatus:
-         Deleting file "Debug\CG tasks.unsuccessfulbuild".
-         Touching "Debug\CG tasks.lastbuildstate".
-     1>Done Building Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" (build target(s)).
+         Algorithm.h
+     1>Done Building Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" (build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:03.18
+Time Elapsed 00:00:01.26

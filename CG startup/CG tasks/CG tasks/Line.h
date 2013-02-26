@@ -1,5 +1,4 @@
-#ifndef LINE_H
-#define LINE_H
+#pragma once
 #include "Point.h"
 struct Line
 {
@@ -9,4 +8,3 @@ struct Line
 	{}
 
 };
-#endif

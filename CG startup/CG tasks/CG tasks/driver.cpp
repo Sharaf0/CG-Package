@@ -5,7 +5,8 @@
 
 #include "Point.h"
 #include "Line.h"
-#include "AlgorithmInfo.h"
+//#include "AlgorithmInfo.h"
+#include "AlgorithmFactory.h"
 
 #include <gl/gl.h>
 #include <gl/glut.h>
@@ -15,8 +16,6 @@ using namespace std;
 
 vector<Point> inPoints, outPoints;
 vector<Line>  inLines , outLines;
-
-vector<AlgorithmInfo*> algorithms;
 
 #define POINT_MODE 1
 #define LINE_MODE  2
@@ -233,7 +232,9 @@ void openFileType(int choice)
 void mainMenu(int choice){}
 void runAlgorithms(int choice)
 {
-	algorithms[choice]->run(inPoints, inLines, outPoints, outLines);
+	AlgorithmFactory factory;
+	Algorithm* algorithm = factory.createAlgorithm(algorithmsNames[choice]);
+	algorithm->run(inPoints,inLines,outPoints,outLines);
 	//Todo: draw new points and lines
 }
 void initMenus()
@@ -249,8 +250,9 @@ void initMenus()
 	glutAddMenuEntry("Lines", 1);
 
 	algorithmsSubmenu = glutCreateMenu(runAlgorithms);
-	for(unsigned i = 0; i < algorithms.size(); i ++)
-		glutAddMenuEntry(algorithms[i]->algorithmName.c_str(),i);
+	
+	for(unsigned i = 0; i < ALGORITHMS_NUM; i ++)
+		glutAddMenuEntry(algorithmsNames[i].c_str(),i);
 
 	glutCreateMenu(mainMenu);
 	glutAddSubMenu("Drawing Mode", drawingSubmenu);
