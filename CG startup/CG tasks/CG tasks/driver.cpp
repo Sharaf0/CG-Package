@@ -5,7 +5,6 @@
 
 #include "Point.h"
 #include "Line.h"
-//#include "AlgorithmInfo.h"
 #include "AlgorithmFactory.h"
 
 #include <gl/gl.h>
@@ -27,6 +26,14 @@ vector<Line>  inLines , outLines;
 #define DEFAULT_LINE_COLOR_R 0.0
 #define DEFAULT_LINE_COLOR_G 0.0
 #define DEFAULT_LINE_COLOR_B 0.0
+
+#define OUT_POINT_COLOR_R 1.0
+#define OUT_POINT_COLOR_G 0.0
+#define OUT_POINT_COLOR_B 0.0
+
+#define OUT_LINE_COLOR_R 0.0
+#define OUT_LINE_COLOR_G 1.0
+#define OUT_LINE_COLOR_B 0.0
 
 
 int DRAWING_MODE;
@@ -235,7 +242,9 @@ void runAlgorithms(int choice)
 	AlgorithmFactory factory;
 	Algorithm* algorithm = factory.createAlgorithm(algorithmsNames[choice]);
 	algorithm->run(inPoints,inLines,outPoints,outLines);
-	//Todo: draw new points and lines
+	drawPoints(outPoints,OUT_POINT_COLOR_R,OUT_POINT_COLOR_G,OUT_POINT_COLOR_B);
+	drawLines(outLines,OUT_LINE_COLOR_R,OUT_LINE_COLOR_G,OUT_LINE_COLOR_B);
+	glFlush();
 }
 void initMenus()
 {

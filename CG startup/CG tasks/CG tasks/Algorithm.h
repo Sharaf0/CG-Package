@@ -8,7 +8,7 @@ using namespace std;
 class Algorithm
 {
 public:
-	Algorithm(){}
-	virtual void run(	vector<Point> inputPoints, vector<Line>& inputLines,
-				vector<Point>& outputPoints, vector<Line>& outputLines) = 0;
+	//Algorithm(){}
+	virtual void run(	vector<Point>& inputPoints, vector<Line>& inputLines,
+						vector<Point>& outputPoints, vector<Line>& outputLines) = 0;
 };

@@ -4,6 +4,7 @@
 #include "CH_JarvisMarch.h"
 #include "CH_ExtremePoints.h"
 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -19,6 +20,10 @@ public:
 			return new CH_ExtremePoints();
 		if(type=="CH_JarvisMarch")
 			return new CH_JarvisMarch();
-
+		else
+		{
+			cerr<<"Can't find such type"<<endl;
+			exit(1);
+		}
 	}
 };
