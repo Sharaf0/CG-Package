@@ -1,4 +1,7 @@
 #pragma once
+#ifndef POINT
+#define POINT
+
 struct Point
 {
 	float x, y;
@@ -9,3 +12,4 @@ struct Point
 	{return x < p.x || (x == p.x && y < p.y);}
 
 };
+#endif

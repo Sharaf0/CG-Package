@@ -24,6 +24,9 @@
     <ClCompile Include="Algorithm.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities.h">
+      <Filter>Algorithms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">

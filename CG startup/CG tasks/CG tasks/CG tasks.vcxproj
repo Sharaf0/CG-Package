@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="Algorithm.h" />
     <ClCompile Include="driver.cpp" />
+    <ClCompile Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CH_ExtremePoints.h" />

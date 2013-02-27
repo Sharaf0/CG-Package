@@ -1,17 +1,10 @@
 #include <windows.h>
-#include <fstream>
 #include <CommDlg.h>
-#include <vector>
 
-#include "Point.h"
-#include "Line.h"
 #include "AlgorithmFactory.h"
 
 #include <gl/gl.h>
 #include <gl/glut.h>
-
-using namespace std;
-
 
 vector<Point> inPoints, outPoints;
 vector<Line>  inLines , outLines;
@@ -239,8 +232,7 @@ void openFileType(int choice)
 void mainMenu(int choice){}
 void runAlgorithms(int choice)
 {
-	AlgorithmFactory factory;
-	Algorithm* algorithm = factory.createAlgorithm(algorithmsNames[choice]);
+	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
 	algorithm->run(inPoints,inLines,outPoints,outLines);
 	drawPoints(outPoints,OUT_POINT_COLOR_R,OUT_POINT_COLOR_G,OUT_POINT_COLOR_B);
 	drawLines(outLines,OUT_LINE_COLOR_R,OUT_LINE_COLOR_G,OUT_LINE_COLOR_B);

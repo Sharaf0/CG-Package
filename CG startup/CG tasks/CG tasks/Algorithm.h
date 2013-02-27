@@ -1,14 +1,16 @@
 #pragma once
+#ifndef ALGORITHM
+#define ALGORITHM
 
-#include <vector>
-#include "Point.h"
-#include "Line.h"
+#include "Utilities.h"
+
 using namespace std;
 
 class Algorithm
 {
 public:
 	//Algorithm(){}
-	virtual void run(	vector<Point>& inputPoints, vector<Line>& inputLines,
+	virtual void run(	const vector<Point>& inputPoints, const vector<Line>& inputLines,
 						vector<Point>& outputPoints, vector<Line>& outputLines) = 0;
 };
+#endif
