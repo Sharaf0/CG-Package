@@ -6,8 +6,8 @@
 #include <gl/gl.h>
 #include <gl/glut.h>
 
-vector<Point> inPoints, outPoints;
-vector<Line>  inLines , outLines;
+static vector<Point> inPoints, outPoints;
+static vector<Line>  inLines , outLines;
 
 #define POINT_MODE 1
 #define LINE_MODE  2
@@ -175,6 +175,10 @@ void processKeyboard(unsigned char key, int x, int y)
 		glClear(GL_COLOR_BUFFER_BIT);
 		glFlush();
 	}
+	if(key == 27)//Escape
+	{
+		OnDisplay();
+	}
 }
 /**
 Handles resizing of the window. This event is triggered whenever the
@@ -234,6 +238,7 @@ void runAlgorithms(int choice)
 {
 	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
 	algorithm->run(inPoints,inLines,outPoints,outLines);
+	//MessageBox(NULL,"DONE ya kbeer :D","Warning",MB_OK);
 	drawPoints(outPoints,OUT_POINT_COLOR_R,OUT_POINT_COLOR_G,OUT_POINT_COLOR_B);
 	drawLines(outLines,OUT_LINE_COLOR_R,OUT_LINE_COLOR_G,OUT_LINE_COLOR_B);
 	glFlush();

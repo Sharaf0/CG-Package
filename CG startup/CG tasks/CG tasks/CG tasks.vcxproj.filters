@@ -44,6 +44,9 @@
     <ClInclude Include="CH_ExtremePoints.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
+    <ClInclude Include="CH_ExtremeSegments.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />

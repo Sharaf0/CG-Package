@@ -12,7 +12,7 @@ public:
 	{
 		if(inputPoints.size()<3)return;
 
-		outputPoints.clear();
+		outputPoints.clear(), outputLines.clear();
 		for(unsigned i = 0; i < inputPoints.size(); i ++)
 		{
 			bool in = false;
