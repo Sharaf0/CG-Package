@@ -6,6 +6,16 @@
 
 class CH_JarvisMarch : public Algorithm
 {
+private:
+	bool isLessY(const Point& a, const Point& b)const
+	{
+			if(a.y<b.y)return true;
+			if(a.y>b.y)return false;
+			//a.y==b.y
+			if(a.x<b.x)return true;
+			//a.x>b.x
+			return false;
+	}
 public:
 	CH_JarvisMarch(){}
 	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines,
@@ -14,17 +24,37 @@ public:
 		if(inputPoints.size()<3)return;
 		outputPoints.clear(), outputLines.clear();
 
-		//vector<Point>::iterator minXPointIndex;
-		//min_element(inputPoints.begin(),inputPoints.end());
+		//Handle Colinear points
+		
+		Point minYPoint(10000,10000);
+		int minYPointIndex;
+		for(unsigned i = 0; i < inputPoints.size(); i ++)
+		{
+			if(isLessY(inputPoints[i],minYPoint))
+				minYPoint = inputPoints[i],
+				minYPointIndex = i;
+		}
 
+		Line movingVector(Point(minYPoint.x+1,minYPoint.y),minYPoint);
+		
+		float minAngle, angleNow;
+		int minAngleIndex;
 
-		//Line initialVector(Point(minXPoint.x,0),Point(minXPoint.x,-1));
-		//float minAngle = 1000;
-		//int minAngleIndex;
-		//for(unsigned i = 0; i < inputPoints.size(); i ++)
-		//{
-		//	Utilities::getAngle2Vectors(Line,
-		//}
+		outputPoints.push_back(minYPoint);
+		while(outputPoints[0]!=outputPoints[outputPoints.size()-1] || (outputPoints.size()==1&&outputPoints[0]==outputPoints[outputPoints.size()-1]))
+		{
+			minAngle = 1000;
+			for(unsigned i = 0; i < inputPoints.size(); i ++)
+			{
+				angleNow = Utilities::getAngle2Vectors(movingVector.start,movingVector.end,movingVector.end,inputPoints[i]);
+				if(angleNow<minAngle)
+					minAngle = angleNow,
+					minAngleIndex = i;
+			}
+			movingVector = Line(movingVector.end,inputPoints[minAngleIndex]);
+			outputPoints.push_back(inputPoints[minAngleIndex]);
+			outputLines.push_back(movingVector);
+		}
 	}
 };
 #endif

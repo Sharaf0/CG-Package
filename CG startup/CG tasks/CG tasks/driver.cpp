@@ -1,5 +1,7 @@
 #include <windows.h>
 #include <CommDlg.h>
+#include <stdlib.h>   //  for malloc
+#include <stdarg.h>
 
 #include "AlgorithmFactory.h"
 
@@ -41,7 +43,10 @@ void drawPoints(const vector<Point>& points, float r, float g, float b)
 	glPointSize(5.0);
 	glBegin(GL_POINTS);
 	for(unsigned i = 0; i < points.size(); i ++)
+	{
 		glVertex2f(points[i].x, points[i].y);
+		glFlush();
+	}
 	glEnd();
 }
 
@@ -50,13 +55,14 @@ void drawLines(const vector<Line>& lines, float r, float g, float b)
 	for(unsigned i = 0; i < lines.size(); i ++)
 	{
 		glBegin(GL_LINES);
-			glColor3f(r,g,b);
-			glLineWidth(5.0);
-			glVertex2f(lines[i].start.x, lines[i].start.y);
-			glVertex2f(lines[i].end.x, lines[i].end.y);
+		glColor3f(r,g,b);
+		glLineWidth(5.0);
+		glVertex2f(lines[i].start.x, lines[i].start.y);
+		glVertex2f(lines[i].end.x, lines[i].end.y);
 		glEnd();
 	}
 }
+
 /**
 Open file dialog, returns empty string if user cancels the operation.
 */
@@ -78,10 +84,10 @@ string openFile()
 	ofn.lpstrInitialDir = NULL;
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	if (GetOpenFileName(&ofn)==TRUE);
-		//hf = CreateFile(ofn.lpstrFile, GENERIC_READ,
-		//0, (LPSECURITY_ATTRIBUTES) NULL,
-		//OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
-		//(HANDLE) NULL);
+	//hf = CreateFile(ofn.lpstrFile, GENERIC_READ,
+	//0, (LPSECURITY_ATTRIBUTES) NULL,
+	//OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+	//(HANDLE) NULL);
 	return ofn.lpstrFile;
 }
 /**
@@ -213,7 +219,7 @@ void openFileType(int choice)
 		MessageBox(NULL,"No File Selected","MSG",MB_OK);
 		//return;
 	}
-	
+
 	if(choice == 0)//Points
 	{
 		Point temp;
@@ -231,7 +237,7 @@ void openFileType(int choice)
 		}
 		glFlush();
 	}
-	
+
 }
 void mainMenu(int choice){}
 void runAlgorithms(int choice)
@@ -246,7 +252,7 @@ void runAlgorithms(int choice)
 void initMenus()
 {
 	int drawingSubmenu, openFileSubmenu, algorithmsSubmenu;
-	
+
 	drawingSubmenu = glutCreateMenu(selectDrawingMode);
 	glutAddMenuEntry("Point", 0);
 	glutAddMenuEntry("Line", 1);
@@ -256,7 +262,7 @@ void initMenus()
 	glutAddMenuEntry("Lines", 1);
 
 	algorithmsSubmenu = glutCreateMenu(runAlgorithms);
-	
+
 	for(unsigned i = 0; i < ALGORITHMS_NUM; i ++)
 		glutAddMenuEntry(algorithmsNames[i].c_str(),i);
 
