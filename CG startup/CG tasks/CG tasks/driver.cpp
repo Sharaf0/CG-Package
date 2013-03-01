@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <CommDlg.h>
-#include <stdlib.h>   //  for malloc
+#include <stdlib.h>//for malloc
 #include <stdarg.h>
 
 #include "AlgorithmFactory.h"
@@ -13,6 +13,8 @@ static vector<Line>  inLines , outLines;
 
 #define POINT_MODE 1
 #define LINE_MODE  2
+
+#define POINT_SIZE 3
 
 #define DEFAULT_POINT_COLOR_R 0.0
 #define DEFAULT_POINT_COLOR_G 0.0
@@ -37,17 +39,36 @@ bool isDrawing;
 int width = 600;
 int height = 600;
 
+int Point::drawID = 0;
+int Line::drawID  = 0;
+
+void writePoint(const Point& p)
+{
+	char str[20];
+	glRasterPos2f(p.x+POINT_SIZE, p.y+POINT_SIZE);
+	sprintf(str,"%d", p.pointDrawID);
+	for(int i = 0; i < strlen(str); i ++)
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
+}
+
 void drawPoints(const vector<Point>& points, float r, float g, float b)
 {
+	//glClearColor(1,1,1,1);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	
 	glColor3f(r,g,b);
-	glPointSize(5.0);
+	glPointSize(POINT_SIZE);
 	glBegin(GL_POINTS);
 	for(unsigned i = 0; i < points.size(); i ++)
-	{
 		glVertex2f(points[i].x, points[i].y);
-		glFlush();
-	}
 	glEnd();
+
+	for(unsigned i = 0; i < points.size(); i ++)
+	{
+		glColor3f(r, g, b);
+		writePoint(points[i]);
+	}
+	glFlush();
 }
 
 void drawLines(const vector<Line>& lines, float r, float g, float b)
@@ -135,7 +156,7 @@ void processMouse(int button, int state, int x, int y)
 	{
 		if(DRAWING_MODE == POINT_MODE)
 		{
-			inPoints.push_back(Point(wx,wy));
+			inPoints.push_back(Point(wx,wy,1));
 		}
 		if(DRAWING_MODE == LINE_MODE)
 		{
@@ -180,6 +201,7 @@ void processKeyboard(unsigned char key, int x, int y)
 		glClearColor(1,1,1,1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glFlush();
+		Point::drawID=0;
 	}
 	if(key == 27)//Escape
 	{

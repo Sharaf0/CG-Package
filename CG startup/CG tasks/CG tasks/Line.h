@@ -3,12 +3,18 @@
 #define LINE
 
 #include "Point.h"
-struct Line
+class Line
 {
+public:
+	static int drawID;
+	int lineDrawID;
 	Point start, end;
 	Line(){}
-	Line(Point startPoint, Point endPoint): start(startPoint), end(endPoint)
-	{}
+	Line(Point startPoint, Point endPoint, bool toDraw=false): start(startPoint), end(endPoint)
+	{
+		if(toDraw) lineDrawID = drawID++;
+		else lineDrawID = 0;
+	}
 
 };
 #endif
