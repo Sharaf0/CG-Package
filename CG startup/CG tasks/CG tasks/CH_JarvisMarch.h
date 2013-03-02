@@ -44,12 +44,18 @@ public:
 		while(outputPoints[0]!=outputPoints[outputPoints.size()-1] || (outputPoints.size()==1&&outputPoints[0]==outputPoints[outputPoints.size()-1]))
 		{
 			minAngle = 1000;
+			minAngleIndex = -1;
 			for(unsigned i = 0; i < inputPoints.size(); i ++)
 			{
 				angleNow = Utilities::getAngle2Vectors(movingVector.start,movingVector.end,movingVector.end,inputPoints[i]);
 				if(angleNow<minAngle)
 					minAngle = angleNow,
 					minAngleIndex = i;
+			}
+			if(minAngleIndex==-1)//All points are colinear
+			{
+				outputPoints.pop_back();//pop extreme point
+				return;
 			}
 			movingVector = Line(movingVector.end,inputPoints[minAngleIndex]);
 			outputPoints.push_back(inputPoints[minAngleIndex]);

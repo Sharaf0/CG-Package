@@ -23,11 +23,18 @@ public:
 	static bool PointInTriangle( const Point& pt, const Point& v1, const Point& v2, const Point& v3)
 	{
 		bool b1, b2, b3;
+		float f1, f2, f3;
 
-		b1 = Utilities::crossProduct(pt, v1, v2) < 0.0f;
-		b2 = Utilities::crossProduct(pt, v2, v3) < 0.0f;
-		b3 = Utilities::crossProduct(pt, v3, v1) < 0.0f;
+		f1 = Utilities::crossProduct(pt, v1, v2);
+		f2 = Utilities::crossProduct(pt, v2, v3);
+		f3 = Utilities::crossProduct(pt, v3, v1);
 
+		if(f1==0&&f2==0&&f3==0)//If all points are collinear
+			return false;
+
+		b1 = f1<0.0f;
+		b2 = f2<0.0f;
+		b3 = f3<0.0f;
 		return ((b1 == b2) && (b2 == b3));
 	}
 
