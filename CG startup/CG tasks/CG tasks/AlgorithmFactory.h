@@ -7,15 +7,17 @@
 #include "CH_ExtremeSegments.h"
 #include "CH_QuickHull.h"
 #include "CH_GrahamHull.h"
+#include "CH_Graham_Hanaa.h"
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 5;
+const int ALGORITHMS_NUM = 6;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
 							"CH_QuickHull",
-							"CH_GrahamHull"};
+							"CH_GrahamHull",
+							"CH_Graham_Hanaa"};
 
 class AlgorithmFactory
 {
@@ -32,6 +34,8 @@ public:
 			return new CH_QuickHull();
 		if(type=="CH_GrahamHull")
 			return new CH_GrahamHull();
+		if(type=="CH_Graham_Hanaa")
+			return new CH_Graham_Hanaa();
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;

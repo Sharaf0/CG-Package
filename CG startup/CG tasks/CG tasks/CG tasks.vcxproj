@@ -84,6 +84,8 @@
     <ClInclude Include="CH_ExtremePoints.h" />
     <ClInclude Include="CH_ExtremeSegments.h" />
     <ClInclude Include="CH_GrahamHull.h" />
+    <ClInclude Include="CH_Graham_Hanaa.h" />
+    <ClInclude Include="CH_Incremental_Hanaa.h" />
     <ClInclude Include="CH_JarvisMarch.h" />
     <ClInclude Include="AlgorithmFactory.h" />
     <ClInclude Include="CH_QuickHull.h" />
