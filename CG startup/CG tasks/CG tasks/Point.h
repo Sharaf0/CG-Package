@@ -1,7 +1,6 @@
 #pragma once
 #ifndef POINT
 #define POINT
-
 class Point
 {
 public:
@@ -25,5 +24,4 @@ public:
 	{return (p.x!=this->x || p.y!=this->y); }
 
 };
-
 #endif

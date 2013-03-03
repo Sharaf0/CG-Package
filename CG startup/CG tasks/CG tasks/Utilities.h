@@ -12,6 +12,7 @@
 using namespace std;
 
 #define PI (2*acos(0.0))
+#define EPS 1e-9
 class Utilities
 {
 public:
@@ -66,5 +67,27 @@ public:
 	{
 		return getAngle2Vectors(v1.start,v1.end,v2.start,v2.end);
 	}
+	static float getLinePointDistance(const Line& l, const Point& p)
+	{
+		Point v(l.end.x - l.start.x, l.end.y - l.start.y);
+		if(v.x+v.y==0)
+			return hypot(l.start.x - p.x, l.start.y - p.y);
+
+		return fabs(crossProduct(p,l.start,l.end)/hypot(v.x,v.y));
+	}
+};
+struct AngleComparer
+{
+        Point about;
+        AngleComparer(Point c) {
+                about = c;
+        }
+        bool operator()(const Point& p, const Point& q) const
+		{
+			double cr = Utilities::crossProduct(about,p,q);
+                if (fabs(cr) < EPS)
+                        return make_pair(p.y, p.x) < make_pair(q.y, q.x);
+                return cr > 0;
+        }
 };
 #endif

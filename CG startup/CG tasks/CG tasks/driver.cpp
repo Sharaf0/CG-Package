@@ -39,15 +39,17 @@ bool isDrawing;
 int width = 600;
 int height = 600;
 
-int Point::drawID = 0;
-int Line::drawID  = 0;
+int Point::drawID = 1;
+int Line::drawID  = 1;
 
 void writePoint(const Point& p)
 {
+	//Not to be drawn point
+	if(!p.drawID)return;
 	char str[20];
 	glRasterPos2f(p.x+POINT_SIZE, p.y+POINT_SIZE);
 	sprintf(str,"%d", p.pointDrawID);
-	for(int i = 0; i < strlen(str); i ++)
+	for(unsigned i = 0; i < strlen(str); i ++)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
 }
 
