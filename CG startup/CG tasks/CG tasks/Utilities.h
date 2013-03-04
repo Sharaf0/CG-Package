@@ -14,6 +14,29 @@ using namespace std;
 
 #define PI (2*acos(0.0))
 #define EPS 1e-9
+
+struct AnglePoint 
+{
+	Point P;
+	float angle;
+
+	AnglePoint( Point p , float a)
+	{
+		P = p;
+		angle =a;
+	}
+
+	bool operator < (const AnglePoint &p) const
+	{return (angle < p.angle) ;}
+	bool operator > (const AnglePoint &p) const
+	{return (angle > p.angle) ;}
+
+};
+struct AnglePointQueue
+{
+public : priority_queue  <AnglePoint , vector <AnglePoint> , less<AnglePoint> > Queue;
+};
+
 class Utilities
 {
 public:
@@ -41,12 +64,12 @@ public:
 	}
 
 	/*
-		a        c
-		 \      /								tan(@) = Cy/Cx
-		  \    /								tan(#) = Ay/Ax
-		   \# /									tan(#-@) = (tan @ - tan #)
-	   _____\/@________ (Parallel to X-Axis)			   _______________
-	        b												1-tan @ tan #
+	a        c
+	\      /								tan(@) = Cy/Cx
+	\    /								tan(#) = Ay/Ax
+	\# /									tan(#-@) = (tan @ - tan #)
+	_____\/@________ (Parallel to X-Axis)			   _______________
+	b												1-tan @ tan #
 	*/
 	static float getAngle3Points(const Point& a, const Point& b, const Point& c)
 	{
@@ -76,19 +99,58 @@ public:
 
 		return fabs(crossProduct(p,l.start,l.end)/hypot(v.x,v.y));
 	}
+	static AnglePointQueue sortByAngle(vector<Point> inputPoints , int indexOfBasePoint)
+	{
+		AnglePointQueue SortedList;
+		Point BasePoint = inputPoints[indexOfBasePoint];
+		Line baseVector (Point(BasePoint.x+100,BasePoint.y),BasePoint);
+
+		for (int i = 0 ; i < inputPoints.size(); i++)
+		{
+
+			if (inputPoints[i]!=baseVector.end)
+			{
+				float angle = Utilities::getAngle2Vectors(baseVector.end, baseVector.start,baseVector.start,inputPoints[i]);
+				SortedList.Queue.push(AnglePoint(inputPoints[i],angle));
+			}
+		}
+		return SortedList;
+	}
+
+
+
+	static void SortPointForDrawing (vector <Point> & input , vector<Line> &output)
+	{
+		Point BasePoint = input[0];
+
+		AnglePointQueue Q = sortByAngle(input,0);
+
+		output.clear();
+		output.push_back(Line(BasePoint,Q.Queue.top().P));
+		while (Q.Queue.size()>1)
+		{
+			Point top = Q.Queue.top().P;
+			Q.Queue.pop();
+			output.push_back(Line(top,Q.Queue.top().P));
+		}
+		output.push_back(Line(BasePoint,Q.Queue.top().P));
+		Q.Queue.pop();
+
+	}
 };
 struct AngleComparer
 {
-        Point about;
-        AngleComparer(Point c) {
-                about = c;
-        }
-        bool operator()(const Point& p, const Point& q) const
-		{
-			double cr = Utilities::crossProduct(about,p,q);
-                if (fabs(cr) < EPS)
-                        return make_pair(p.y, p.x) < make_pair(q.y, q.x);
-                return cr > 0;
-        }
+	Point about;
+	AngleComparer(Point c) {
+		about = c;
+	}
+	bool operator()(const Point& p, const Point& q) const
+	{
+		double cr = Utilities::crossProduct(about,p,q);
+		if (fabs(cr) < EPS)
+			return make_pair(p.y, p.x) < make_pair(q.y, q.x);
+		return cr > 0;
+	}
 };
+
 #endif
