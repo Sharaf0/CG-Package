@@ -8,6 +8,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -78,7 +79,8 @@ public:
 };
 struct AngleComparer
 {
-        Point about;
+        static Point about;
+		AngleComparer(){}
         AngleComparer(Point c) {
                 about = c;
         }

@@ -53,6 +53,9 @@
     <ClInclude Include="CH_GrahamHull.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
+    <ClInclude Include="CH_Incremental.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />
