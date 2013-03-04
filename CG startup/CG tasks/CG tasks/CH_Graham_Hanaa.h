@@ -5,23 +5,7 @@
 #include "Algorithm.h"
 
 
-struct AnglePoint 
-{
-	Point P;
-	float angle;
 
-	AnglePoint( Point p , float a)
-	{
-		P = p;
-		angle =a;
-	}
-
-	bool operator < (const AnglePoint &p) const
-	{return (angle < p.angle) ;}
-	bool operator > (const AnglePoint &p) const
-	{return (angle > p.angle) ;}
-	
-};
 
 class CH_Graham_Hanaa : public Algorithm
 {
@@ -57,19 +41,10 @@ public:
 
 		outputPoints.push_back(minYPoint);
 
-		Line baseVector (Point(minYPoint.x+1,minYPoint.y),minYPoint);
-
-
-		priority_queue  <AnglePoint , vector <AnglePoint> , less<AnglePoint> > PointsSortedAngularly;
-		for (int i = 0 ; i < inputPoints.size(); i++)
-		{
-			if (inputPoints[i]!=baseVector.end)
-			{
-			float angle = Utilities::getAngle2Vectors(baseVector.start, baseVector.end,baseVector.end,inputPoints[i]);
-			PointsSortedAngularly.push(AnglePoint(inputPoints[i],angle));
-			}
-		}
-
+		AnglePointQueue PointsSorted ;
+		PointsSorted = Utilities::sortByAngle(inputPoints,minYPointIndex);
+		
+		priority_queue  <AnglePoint , vector <AnglePoint> , less<AnglePoint> > PointsSortedAngularly = PointsSorted.Queue;
 		outputPoints.push_back(PointsSortedAngularly.top().P);
 		PointsSortedAngularly.pop();
 

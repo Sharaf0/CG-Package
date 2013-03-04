@@ -82,7 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CH_ExtremePoints.h" />
+    <ClInclude Include="CH_ExtremePoints_Hanaa.h" />
     <ClInclude Include="CH_ExtremeSegments.h" />
+    <ClInclude Include="CH_ExtremeSegments_Hanaa.h" />
     <ClInclude Include="CH_GrahamHull.h" />
     <ClInclude Include="CH_Graham_Hanaa.h" />
     <ClInclude Include="CH_Incremental_Hanaa.h" />

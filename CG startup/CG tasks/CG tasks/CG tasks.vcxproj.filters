@@ -59,6 +59,12 @@
     <ClInclude Include="CH_Incremental_Hanaa.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
+    <ClInclude Include="CH_ExtremePoints_Hanaa.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="CH_ExtremeSegments_Hanaa.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />
