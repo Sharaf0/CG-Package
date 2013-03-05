@@ -1,4 +1,4 @@
-﻿Build started 3/4/2013 3:10:24 PM.
+﻿Build started 3/5/2013 6:18:29 AM.
      1>Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\CG tasks.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -14,7 +14,10 @@
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_grahamhull.h(12): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_grahamhull.h(31): warning C4018: '<=' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_grahamhull.h(42): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(65): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(47): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(47): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(49): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(77): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(52): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(115): warning C4390: ';' : empty controlled statement found; is this the intent?
@@ -41,4 +44,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.73
+Time Elapsed 00:00:03.66

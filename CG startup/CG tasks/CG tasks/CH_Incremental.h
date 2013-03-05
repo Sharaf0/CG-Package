@@ -20,13 +20,13 @@ private:
 		PointIterator t = up;
 		if(t!=convex.end())
 			t++;
-		while(t!=convex.end() && up!=convex.end() && Utilities::crossProduct(p,(*up),(*t)) < 0)
+		while(convex.size()>=2 && t!=convex.end() && up!=convex.end() && Utilities::crossProduct(p,(*up),(*t)) < 0)
 			up = convex.erase(up);
 		//lower
 		t = down;
 		if(up!=convex.begin())
 			t --;
-		while(up!=convex.begin()&& down!=convex.begin()&& Utilities::crossProduct(p,(*down),(*t)) > 0)
+		while(convex.size()>=2 && up!=convex.begin()&& down!=convex.begin()&& Utilities::crossProduct(p,(*down),(*t)) > 0)
 			down = convex.erase(down);
 		convex.insert(p);
 	}
@@ -43,9 +43,18 @@ public:
 
 		int n = input.size();
 
-		Point origin = AngleComparer::about = (*min_element(input.begin(), input.end()));
+		double zero = 0.0;
+		Point origin(1 / zero, 1 / zero);//OO
+		int index;
+		for (int i = 0; i < input.size(); i++)
+			if (make_pair(input[i].y, input[i].x) < make_pair(origin.y, origin.x))
+				origin = input[i], index = i;
+		swap(input[0],input[index]);
+		AngleComparer::about = origin;
+		//input.erase(input.begin()+index);
+
 		set<Point, AngleComparer> convex;
-		for(int i = 1; i < 3; i ++)
+		for(int i = 0; i < 3; i ++)
 			convex.insert(input[i]);
 
 		PointIterator upIt, downIt;
@@ -56,8 +65,11 @@ public:
 			downIt--;
 			if(!outside(convex, upIt, downIt, input[i]))
 				continue;
-			//else
-			addPoint(convex, upIt, downIt,input[i]);
+			//INSIDE
+			if(upIt==convex.begin())
+				addPoint(convex, upIt, convex.end(),input[i]);
+			else
+				addPoint(convex, upIt, downIt,input[i]);
 		}
 		for(PointIterator i = convex.begin(); i!=convex.end(); i ++)
 			outputPoints.push_back((*i));

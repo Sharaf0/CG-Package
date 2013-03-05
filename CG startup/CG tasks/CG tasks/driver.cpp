@@ -206,7 +206,7 @@ void processKeyboard(unsigned char key, int x, int y)
 		glClearColor(1,1,1,1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glFlush();
-		Point::drawID=0;
+		Point::drawID=1;
 	}
 	if(key == 27)//Escape
 	{
