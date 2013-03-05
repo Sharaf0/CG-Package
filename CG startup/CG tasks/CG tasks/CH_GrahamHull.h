@@ -44,6 +44,8 @@ public:
 		}
 		for(unsigned i = 0; i < outputPoints.size(); i ++)
 			outputLines.push_back(Line(outputPoints[i],outputPoints[(i+1)%outputPoints.size()]));
+		if(outputPoints.size() < 3)
+			outputPoints.clear(), outputLines.clear();
 	}
 };
 #endif

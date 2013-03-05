@@ -88,6 +88,8 @@ public:
 		outputPoints.insert(outputPoints.end(),upHull.begin(),upHull.end());
 		outputPoints.insert(outputPoints.end(),downHull.begin(),downHull.end());
 		outputPoints.resize(unique(outputPoints.begin(),outputPoints.end())-outputPoints.begin());
+		if(outputPoints.size()<2)
+			return;
 		for(unsigned i = 0; i < outputPoints.size()-1; i ++)
 			outputLines.push_back(Line(outputPoints[i],outputPoints[i+1]));
 	}
