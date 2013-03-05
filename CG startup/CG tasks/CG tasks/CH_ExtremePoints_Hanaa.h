@@ -60,26 +60,6 @@ public:
 		
 		Utilities::SortPointForDrawing(outputPoints,outputLines);
 	}
-	void SortPointForDrawing (vector <Point> & input , vector<Line> &output)
-	{
-		output.clear();
-		
-		for (int i = 0 ; i < input.size() ; i++)
-		{
-			Point BasePoint = input[i];
-			Line baseVector (Point(BasePoint.x+1,BasePoint.y),BasePoint);
-			float minAngle = 1000;int index;
-			for (int j = 0 ; j < input.size() ; j++)
-			{
-				float angle = Utilities::getAngle2Vectors(baseVector.start, baseVector.end,baseVector.end,input[j]);
-				if(angle<minAngle)
-					minAngle=angle,index=j;
-			}
-			output.push_back(Line(BasePoint,input[index]));
-
-		}
-
-
-	}
+	
 };
 #endif

@@ -65,6 +65,9 @@
     <ClInclude Include="CH_ExtremeSegments_Hanaa.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
+    <ClInclude Include="CH_Jarvis_Hanaa.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />

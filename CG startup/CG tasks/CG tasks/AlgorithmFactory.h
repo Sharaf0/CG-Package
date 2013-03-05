@@ -9,18 +9,22 @@
 #include "CH_GrahamHull.h"
 #include "CH_Graham_Hanaa.h"
 #include "CH_ExtremePoints_Hanaa.h"
+#include"CH_ExtremeSegments_Hanaa.h"
+#include "CH_Incremental_Hanaa.h"
 
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 7;
+const int ALGORITHMS_NUM = 9;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
 							"CH_QuickHull",
 							"CH_GrahamHull",
 							"CH_Graham_Hanaa",
-							"CH_ExtremePoints_Hanaa"};
+							"CH_ExtremePoints_Hanaa",
+							"CH_ExtremeSegments_Hanaa",
+							"CH_Incremental_Hanaa"};
 
 class AlgorithmFactory
 {
@@ -41,6 +45,11 @@ public:
 			return new CH_Graham_Hanaa();
 		if (type=="CH_ExtremePoints_Hanaa")
 			return new CH_ExtremePoints_Hanaa();
+		if (type == "CH_ExtremeSegments_Hanaa")
+			return new CH_ExtremeSegments_Hanaa();
+		if (type == "CH_Incremental_Hanaa")
+			return new CH_Incremental_Hanaa();
+
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;

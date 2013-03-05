@@ -100,40 +100,57 @@ public:
 		return fabs(crossProduct(p,l.start,l.end)/hypot(v.x,v.y));
 	}
 	static AnglePointQueue sortByAngle(vector<Point> inputPoints , int indexOfBasePoint)
+{
+AnglePointQueue SortedList;
+Point BasePoint = inputPoints[indexOfBasePoint];
+Line baseVector (Point(BasePoint.x+100,BasePoint.y),BasePoint);
+
+for (int i = 0 ; i < inputPoints.size(); i++)
+{
+if (inputPoints[i]!=baseVector.end)
+{
+float angle = Utilities::getAngle2Vectors(baseVector.start, baseVector.end,baseVector.end,inputPoints[i]);
+SortedList.Queue.push(AnglePoint(inputPoints[i],angle));
+}
+}
+return SortedList;
+}
+
+
+
+
+	static bool isLessY(const Point& a, const Point& b)
 	{
-		AnglePointQueue SortedList;
-		Point BasePoint = inputPoints[indexOfBasePoint];
-		Line baseVector (Point(BasePoint.x+100,BasePoint.y),BasePoint);
-
-		for (int i = 0 ; i < inputPoints.size(); i++)
-		{
-
-			if (inputPoints[i]!=baseVector.end)
-			{
-				float angle = Utilities::getAngle2Vectors(baseVector.end, baseVector.start,baseVector.start,inputPoints[i]);
-				SortedList.Queue.push(AnglePoint(inputPoints[i],angle));
-			}
-		}
-		return SortedList;
+		if(a.y<b.y)return true;
+		if(a.y>b.y)return false;
+		//a.y==b.y
+		if(a.x<b.x)return true;
+		//a.x>b.x
+		return false;
 	}
-
-
 
 	static void SortPointForDrawing (vector <Point> & input , vector<Line> &output)
 	{
-		Point BasePoint = input[0];
+		Point minYPoint(10000,10000);
+		int minYPointIndex;
+		for(unsigned i = 0; i < input.size(); i ++)
+		{
+			if(isLessY(input[i],minYPoint))
+				minYPoint = input[i],
+				minYPointIndex = i;
+		}
 
-		AnglePointQueue Q = sortByAngle(input,0);
+		AnglePointQueue Q = sortByAngle(input,minYPointIndex);
 
 		output.clear();
-		output.push_back(Line(BasePoint,Q.Queue.top().P));
+		output.push_back(Line(minYPoint,Q.Queue.top().P));
 		while (Q.Queue.size()>1)
 		{
 			Point top = Q.Queue.top().P;
 			Q.Queue.pop();
 			output.push_back(Line(top,Q.Queue.top().P));
 		}
-		output.push_back(Line(BasePoint,Q.Queue.top().P));
+		output.push_back(Line(minYPoint,Q.Queue.top().P));
 		Q.Queue.pop();
 
 	}
