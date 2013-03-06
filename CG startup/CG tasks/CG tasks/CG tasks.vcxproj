@@ -81,6 +81,7 @@
     <ClCompile Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CH_DivideAndConquer.h" />
     <ClInclude Include="CH_ExtremePoints.h" />
     <ClInclude Include="CH_ExtremeSegments.h" />
     <ClInclude Include="CH_GrahamHull.h" />

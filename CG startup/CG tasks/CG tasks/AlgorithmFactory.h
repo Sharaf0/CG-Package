@@ -8,16 +8,18 @@
 #include "CH_QuickHull.h"
 #include "CH_GrahamHull.h"
 #include "CH_Incremental.h"
+#include "CH_DivideAndConquer.h"
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 6;
+const int ALGORITHMS_NUM = 7;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
 							"CH_QuickHull",
 							"CH_GrahamHull",
-							"CH_Incremental"
+							"CH_Incremental",
+							"CH_DivideAndConquer"
 							};
 
 class AlgorithmFactory
@@ -37,6 +39,8 @@ public:
 			return new CH_GrahamHull();
 		if(type=="CH_Incremental")
 			return new CH_Incremental();
+		if(type=="CH_DivideAndConquer")
+			return new CH_DivideAndConquer();
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;
