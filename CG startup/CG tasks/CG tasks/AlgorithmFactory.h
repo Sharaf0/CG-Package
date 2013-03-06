@@ -15,12 +15,12 @@
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 9;
-string algorithmsNames[] = {"CH_ExtremePoints",
-							"CH_JarvisMarch",
-							"CH_ExtremeSegments",
-							"CH_QuickHull",
-							"CH_GrahamHull",
+const int ALGORITHMS_NUM = 4;
+string algorithmsNames[] = {//"CH_ExtremePoints",
+							//"CH_JarvisMarch",
+							//"CH_ExtremeSegments",
+							//"CH_QuickHull",
+							//"CH_GrahamHull",
 							"CH_Graham_Hanaa",
 							"CH_ExtremePoints_Hanaa",
 							"CH_ExtremeSegments_Hanaa",

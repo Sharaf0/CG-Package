@@ -1,4 +1,4 @@
-﻿Build started 05/03/2013 03:28:14 م.
+﻿Build started 05/03/2013 03:53:42 م.
      1>Project "C:\Users\sam\Documents\GitHub\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" on node 2 (rebuild target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\CG tasks.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -70,4 +70,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.34
+Time Elapsed 00:00:08.15
