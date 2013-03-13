@@ -16,6 +16,12 @@
     <Filter Include="Algorithms">
       <UniqueIdentifier>{d9fdbf70-49f3-48a8-98ed-52a438b7cc41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithms\ConvexHull">
+      <UniqueIdentifier>{1caf84d0-96d9-4da8-94da-c0740ee5c44e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithms\SweepLine">
+      <UniqueIdentifier>{83b89ba0-8d3c-41fa-9897-77fe0b9fbc0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.cpp">
@@ -35,29 +41,35 @@
     <ClInclude Include="Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CH_JarvisMarch.h">
-      <Filter>Algorithms</Filter>
-    </ClInclude>
     <ClInclude Include="AlgorithmFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CH_DivideAndConquer.h">
+      <Filter>Algorithms\ConvexHull</Filter>
+    </ClInclude>
     <ClInclude Include="CH_ExtremePoints.h">
-      <Filter>Algorithms</Filter>
+      <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
     <ClInclude Include="CH_ExtremeSegments.h">
-      <Filter>Algorithms</Filter>
-    </ClInclude>
-    <ClInclude Include="CH_QuickHull.h">
-      <Filter>Algorithms</Filter>
+      <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
     <ClInclude Include="CH_GrahamHull.h">
-      <Filter>Algorithms</Filter>
+      <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
     <ClInclude Include="CH_Incremental.h">
-      <Filter>Algorithms</Filter>
+      <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
-    <ClInclude Include="CH_DivideAndConquer.h">
-      <Filter>Algorithms</Filter>
+    <ClInclude Include="CH_JarvisMarch.h">
+      <Filter>Algorithms\ConvexHull</Filter>
+    </ClInclude>
+    <ClInclude Include="CH_QuickHull.h">
+      <Filter>Algorithms\ConvexHull</Filter>
+    </ClInclude>
+    <ClInclude Include="SL_BentleyOttman.h">
+      <Filter>Algorithms\SweepLine</Filter>
+    </ClInclude>
+    <ClInclude Include="SL_BruteForce.h">
+      <Filter>Algorithms\SweepLine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,10 @@ public:
 	{
 		return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 	}
-
+	static float cross2Vectors( const Point& a, const Point& b)
+	{
+		return a.x*b.y - a.y*b.x;
+	}
 	static bool PointInTriangle( const Point& pt, const Point& v1, const Point& v2, const Point& v3)
 	{
 		bool b1, b2, b3;
@@ -41,12 +44,12 @@ public:
 	}
 
 	/*
-		a        c
-		 \      /								tan(@) = Cy/Cx
-		  \    /								tan(#) = Ay/Ax
-		   \# /									tan(#-@) = (tan @ - tan #)
-	   _____\/@________ (Parallel to X-Axis)			   _______________
-	        b												1-tan @ tan #
+	a        c
+	\      /								tan(@) = Cy/Cx
+	\    /								tan(#) = Ay/Ax
+	\# /									tan(#-@) = (tan @ - tan #)
+	_____\/@________ (Parallel to X-Axis)			   _______________
+	b												1-tan @ tan #
 	*/
 	static float getAngle3Points(const Point& a, const Point& b, const Point& c)
 	{
@@ -76,20 +79,82 @@ public:
 
 		return fabs(crossProduct(p,l.start,l.end)/hypot(v.x,v.y));
 	}
+	/*
+	double dot(PT p, PT q)     { return p.x*q.x+p.y*q.y; }
+	double dist2(PT p, PT q)   { return dot(p-q,p-q); }
+	double cross(PT p, PT q)   { return p.x*q.y-p.y*q.x; }
+	// determine if line segment from a to b intersects with 
+	// line segment from c to d
+	bool SegmentsIntersect(PT a, PT b, PT c, PT d)
+	{
+		if (LinesCollinear(a, b, c, d))
+		{
+			if (dist2(a, c) < EPS || dist2(a, d) < EPS ||
+				dist2(b, c) < EPS || dist2(b, d) < EPS) return true;
+			if (dot(c-a, c-b) > 0 && dot(d-a, d-b) > 0 && dot(c-b, d-b) > 0)
+				return false;
+			return true;
+		}
+		if (cross(d-a, b-a) * cross(c-a, b-a) > 0) return false;
+		if (cross(a-c, d-c) * cross(b-c, d-c) > 0) return false;
+		return true;
+	}
+
+	// compute intersection of line passing through a and b
+	// with line passing through c and d, assuming that unique
+	// intersection exists; for segment intersection, check if
+	// segments intersect first
+	PT ComputeLineIntersection(PT a, PT b, PT c, PT d)
+	{
+		b=b-a; d=c-d; c=c-a;
+		assert(dot(b, b) > EPS && dot(d, d) > EPS);
+		return a + b*cross(c, d)/cross(b, d);
+	}
+	*/
 };
 struct AngleComparer
 {
-        static Point about;
-		AngleComparer(){}
-        AngleComparer(Point c) {
-                about = c;
-        }
-        bool operator()(const Point& p, const Point& q) const
-		{
-			double cr = Utilities::crossProduct(about,p,q);
-                if (fabs(cr) < EPS)
-                        return make_pair(p.y, p.x) < make_pair(q.y, q.x);
-                return cr > 0;
-        }
+	static Point about;
+	AngleComparer(){}
+	AngleComparer(Point c) {about = c;}
+	bool operator()(const Point& p, const Point& q) const
+	{
+		double cr = Utilities::crossProduct(about,p,q);
+		if (fabs(cr) < EPS)
+			return make_pair(p.y, p.x) < make_pair(q.y, q.x);
+		return cr > 0;
+	}
+};
+struct IAnglePointsSet
+{
+private:
+	set<Point, AngleComparer> mySet;
+	Point myOrigin;
+public:
+	IAnglePointsSet(){}
+	IAnglePointsSet(Point origin) {myOrigin = origin;}
+
+	set<Point, AngleComparer>::iterator begin() const
+	{
+		return mySet.begin();
+	}
+	set<Point, AngleComparer>::iterator end() const
+	{
+		return mySet.end();
+	}
+	unsigned size()const
+	{
+		return this->mySet.size();
+	}
+	void insert(const Point& p)
+	{
+		AngleComparer::about = myOrigin;
+		mySet.insert(p);
+	}
+	set<Point, AngleComparer>::iterator erase(set<Point, AngleComparer>::iterator it)
+	{
+		AngleComparer::about = myOrigin;
+		return mySet.erase(it);
+	}
 };
 #endif

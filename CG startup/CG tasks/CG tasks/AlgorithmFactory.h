@@ -9,17 +9,21 @@
 #include "CH_GrahamHull.h"
 #include "CH_Incremental.h"
 #include "CH_DivideAndConquer.h"
+#include "SL_BentleyOttman.h"
+#include "SL_BruteForce.h"
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 7;
+const int ALGORITHMS_NUM = 8;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
 							"CH_QuickHull",
 							"CH_GrahamHull",
 							"CH_Incremental",
-							"CH_DivideAndConquer"
+							"CH_DivideAndConquer",
+							"SL_BentleyOttman",
+							"SL_BruteForce"
 							};
 
 class AlgorithmFactory
@@ -41,6 +45,10 @@ public:
 			return new CH_Incremental();
 		if(type=="CH_DivideAndConquer")
 			return new CH_DivideAndConquer();
+		if(type=="SL_BentleyOttman")
+			return new SL_BentleyOttman();
+		if(type=="SL_BruteForce")
+			return new SL_BruteForce();
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;

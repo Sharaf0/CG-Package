@@ -9,7 +9,7 @@ class CH_GrahamHull : public Algorithm
 	{
 		double zero = 0.0;
 		Point mn(1 / zero, 1 / zero);//OO
-		for (int i = 0; i < pnts.size(); i++)
+		for (unsigned i = 0; i < pnts.size(); i++)
 			if (make_pair(pnts[i].y, pnts[i].x) < make_pair(mn.y, mn.x))
 				mn = pnts[i];
 		sort(pnts.begin(),pnts.end(),AngleComparer(mn));
@@ -28,7 +28,7 @@ public:
 		if(input.size()<3)return;
 		outputPoints.push_back(input[0]);
 		outputPoints.push_back(input[1]);
-		for (int i = 2; i <= input.size(); i++)
+		for (unsigned i = 2; i <= input.size(); i++)
 		{
 			Point c = input[i % input.size()];
 			while (outputPoints.size() > 1)

@@ -50,7 +50,7 @@ public:
 		double zero = 0.0;
 		Point origin(1 / zero, 1 / zero);//OO
 		int index;
-		for (int i = 0; i < input.size(); i++)
+		for (unsigned i = 0; i < input.size(); i++)
 			if (make_pair(input[i].y, input[i].x) < make_pair(origin.y, origin.x))
 				origin = input[i], index = i;
 
@@ -88,7 +88,7 @@ public:
 		for(PointIterator i = convex.begin(); i!=convex.end(); i ++)
 			outputPoints.push_back((*i));
 		outputPoints.push_back(AngleComparer::about);
-		for(int i = 0; i < outputPoints.size(); i ++)
+		for(unsigned i = 0; i < outputPoints.size(); i ++)
 			outputLines.push_back(Line(outputPoints[i],outputPoints[(i+1)%outputPoints.size()]));
 		if(outputPoints.size() < 3)
 			outputPoints.clear(), outputLines.clear();

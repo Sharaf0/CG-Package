@@ -2,6 +2,10 @@
 #include <CommDlg.h>
 #include <stdlib.h>//for malloc
 #include <stdarg.h>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <ctime>
 
 #include "AlgorithmFactory.h"
 
@@ -101,7 +105,7 @@ string openFile()
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = sizeof(szFile);
 	//ofn.lpstrFilter = "All\0*.*\0Text\0*.TXT\0";
-	ofn.lpstrFilter = "Text\0*.t\0";
+	ofn.lpstrFilter = "Text\0*.txt\0";
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
@@ -237,41 +241,99 @@ void selectDrawingMode(int choice)
 //check
 void openFileType(int choice)
 {
-	MessageBox(NULL,"Please make sure from file format before choosing it","Warning",MB_OK);
-	string fileName;
-	fileName = openFile();
+	string fileName = openFile();
+	if(fileName=="")
+		return;
 	ifstream input(fileName);
-	if(!input)
-	{
-		MessageBox(NULL,"No File Selected","MSG",MB_OK);
-		//return;
-	}
-
 	if(choice == 0)//Points
 	{
-		Point temp;
-		int entries = 0;
+		float x, y;
 		while(!input.eof())
 		{
-			input>>temp.x>>temp.y;
-			if(/*NOT OK*/0)
-			{
-				//MessageBox(NULL,"File Finshed or Error Detected","MSG",MB_OK);
-				return;
-			}
-			entries++;
-			inPoints.push_back(temp);
+			input>>x>>y;
+			inPoints.push_back(Point(x,y,1));
 		}
-		glFlush();
 	}
-
+	if(choice == 1)//Lines
+	{
+		float x1, y1, x2, y2;
+		while(!input.eof())
+		{
+			input>>x1>>y1>>x2>>y2;
+			inLines.push_back(Line(Point(x1,y1),Point(x2,y2),1));
+		}
+	}
+	OnDisplay();
 }
 void mainMenu(int choice){}
+string getTimeNow()
+{
+	srand(time(0));
+
+	time_t t = time(0);
+	tm* now = localtime(&t);
+	stringstream ss;
+	ss<<
+		now->tm_year+1900<<"-"<<
+		now->tm_mon+1<<"-"<<
+		now->tm_mday<<"-"<<
+		now->tm_hour<<","<<
+		now->tm_min<<","<<
+		now->tm_sec;
+	return ss.str();
+	//return "koko-,1";
+}
+void writePointsInFile(char* path)
+{
+	strcat(path, "\\Points.txt");
+	ofstream outFilePoints(path);
+	for(unsigned i = 0; i < inPoints.size(); i ++)
+		outFilePoints<<inPoints[i].x<<" "<<inPoints[i].y<<endl;
+	while(path[strlen(path)-1]!='\\')
+		path[strlen(path)-1] = '\0';
+	outFilePoints.flush();
+	outFilePoints.close();
+}
+void writeLinesInFile(char* path)
+{
+	strcat(path, "\\Lines.txt");
+	ofstream outFileLines(path);
+	for(unsigned i = 0; i < inLines.size(); i ++)
+		outFileLines<<inLines[i].start.x<<" "<<inLines[i].start.y<<" "
+					 <<inLines[i].end.x<<" "<<inLines[i].end.y<<" "<<endl;
+	while(path[strlen(path)-1]!='\\')
+		path[strlen(path)-1] = '\0';
+	outFileLines.flush();
+	outFileLines.close();
+}
+void saveData()
+{
+	string now = "\\" + getTimeNow();
+	HMODULE hModule = GetModuleHandle(NULL);
+	if(hModule == NULL)
+		return;
+	char ownPath[MAX_PATH];
+	GetModuleFileName(hModule, ownPath, sizeof(ownPath));
+	while(ownPath[strlen(ownPath)-1]!='\\')
+		ownPath[strlen(ownPath)-1] = '\0';
+	//If log directory doesn't exist
+	strcat(ownPath,"log");
+	
+	CreateDirectory(ownPath,NULL);
+	strcat(ownPath, now.c_str());
+	CreateDirectory(ownPath, NULL);
+
+	writePointsInFile(ownPath);
+	writeLinesInFile(ownPath);
+}
 void runAlgorithms(int choice)
 {
+	//Todo: Save data before running in log folder
+	saveData();
 	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
 	algorithm->run(inPoints,inLines,outPoints,outLines);
 	//MessageBox(NULL,"DONE ya kbeer :D","Warning",MB_OK);
+	//Todo: calculate time spent in the algorithm..
 	drawPoints(outPoints,OUT_POINT_COLOR_R,OUT_POINT_COLOR_G,OUT_POINT_COLOR_B);
 	drawLines(outLines,OUT_LINE_COLOR_R,OUT_LINE_COLOR_G,OUT_LINE_COLOR_B);
 	glFlush();
@@ -296,6 +358,8 @@ void initMenus()
 	glutCreateMenu(mainMenu);
 	glutAddSubMenu("Drawing Mode", drawingSubmenu);
 	glutAddSubMenu("Run Algorithm", algorithmsSubmenu);
+	glutAddSubMenu("Import Data", openFileSubmenu);
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 /**
