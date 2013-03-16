@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <CommDlg.h>
-#include <stdlib.h>//for malloc
+#include <stdlib.h>
 #include <stdarg.h>
 #include <fstream>
 #include <sstream>
@@ -50,7 +50,7 @@ Point AngleComparer::about = Point(0,0);
 void writePoint(const Point& p)
 {
 	//Not to be drawn point
-	if(!p.drawID)return;
+	if(!p.pointDrawID)return;
 	char str[20];
 	glRasterPos2f(p.x+POINT_SIZE, p.y+POINT_SIZE);
 	sprintf(str,"%d", p.pointDrawID);
@@ -336,6 +336,7 @@ void runAlgorithms(int choice)
 {
 	saveData();
 	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
+	outPoints.clear(), outLines.clear();
 	algorithm->run(inPoints,inLines,outPoints,outLines);
 	//MessageBox(NULL,"DONE ya kbeer :D","Warning",MB_OK);
 	//Todo: calculate time spent in the algorithm..

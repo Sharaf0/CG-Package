@@ -17,10 +17,17 @@ public:
 	bool Point::operator <(const Point &p) const
 	{return x < p.x || (x == p.x && y < p.y);}
 
+	Point operator + (const Point &p) const
+	{return Point(x+p.x, y+p.y);}
+
 	Point operator - (const Point &p) const
-	{
-		return Point(x-p.x, y-p.y);
-	}
+	{return Point(x-p.x, y-p.y);}
+
+	Point operator * (float c) const
+	{return Point(x*c,y*c);}
+
+	Point operator / (float c) const
+	{ return Point(x/c,y/c);}
 
 	bool operator ==(const Point &p)const
 	{return p.x==this->x && p.y==this->y;}

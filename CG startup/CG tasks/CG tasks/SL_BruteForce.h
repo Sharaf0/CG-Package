@@ -11,12 +11,16 @@ public:
 		vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
 		outputPoints.clear(), outputLines.clear();
+		Line l1, l2;
+		Point intersection;
 		for(unsigned i = 0; i < inputLines.size(); i ++)
 		{
+			l1 = inputLines[i];
 			for(unsigned j = i+1; j < inputLines.size(); j ++)
 			{
-				if(/**/1)
-					;
+				l2 = inputLines[j];
+				if(Utilities::computeSegmentIntersection(l1.start,l1.end,l2.start,l2.end,intersection))
+					outputPoints.push_back(intersection);
 			}
 		}
 	}
