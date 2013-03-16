@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <set>
+#include <list>
 
 using namespace std;
 
@@ -125,6 +126,7 @@ struct AngleComparer
 		return cr > 0;
 	}
 };
+//We can't count on it, because of origin initialization problem
 struct IAnglePointsSet
 {
 private:

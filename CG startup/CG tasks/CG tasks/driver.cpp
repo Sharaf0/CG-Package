@@ -238,7 +238,6 @@ void selectDrawingMode(int choice)
 	if(choice==1)
 		DRAWING_MODE = LINE_MODE;
 }
-//check
 void openFileType(int choice)
 {
 	string fileName = openFile();
@@ -253,6 +252,10 @@ void openFileType(int choice)
 			input>>x>>y;
 			inPoints.push_back(Point(x,y,1));
 		}
+
+		if(inPoints.size()>=2)
+			if(inPoints[inPoints.size()-1]==inPoints[inPoints.size()-2])
+				inPoints.pop_back();
 	}
 	if(choice == 1)//Lines
 	{
@@ -262,6 +265,9 @@ void openFileType(int choice)
 			input>>x1>>y1>>x2>>y2;
 			inLines.push_back(Line(Point(x1,y1),Point(x2,y2),1));
 		}
+		if(inLines.size()>=2)
+			if(inLines[inLines.size()-1]==inLines[inLines.size()-2])
+				inLines.pop_back();
 	}
 	OnDisplay();
 }
@@ -328,7 +334,6 @@ void saveData()
 }
 void runAlgorithms(int choice)
 {
-	//Todo: Save data before running in log folder
 	saveData();
 	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
 	algorithm->run(inPoints,inLines,outPoints,outLines);

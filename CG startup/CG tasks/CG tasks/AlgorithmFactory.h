@@ -14,7 +14,7 @@
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 8;
+const int ALGORITHMS_NUM = 9;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",

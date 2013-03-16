@@ -15,6 +15,9 @@ public:
 		if(toDraw) lineDrawID = drawID++;
 		else lineDrawID = 0;
 	}
-
+	bool operator == (const Line& l)const
+	{
+		return this->start==l.start&&this->end==l.end;
+	}
 };
 #endif
