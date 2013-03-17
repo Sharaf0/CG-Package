@@ -21,7 +21,7 @@ static vector<Line>  inLines , outLines;
 #define POINT_SIZE 3
 
 #define DEFAULT_POINT_COLOR_R 0.0
-#define DEFAULT_POINT_COLOR_G 0.0
+#define DEFAULT_POINT_COLOR_G 1.0
 #define DEFAULT_POINT_COLOR_B 0.0
 
 #define DEFAULT_LINE_COLOR_R 0.0
@@ -51,13 +51,21 @@ void writePoint(const Point& p)
 {
 	//Not to be drawn point
 	if(!p.pointDrawID)return;
-	char str[20];
+	char str[10];
 	glRasterPos2f(p.x+POINT_SIZE, p.y+POINT_SIZE);
 	sprintf(str,"%d", p.pointDrawID);
 	for(unsigned i = 0; i < strlen(str); i ++)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
 }
-
+void writeLine(const Line& l)
+{
+	if(!l.lineDrawID)return;
+	char str[10];
+	glRasterPos2f(l.start.x+POINT_SIZE,l.start.y+POINT_SIZE);
+	sprintf(str, "%d", l.lineDrawID);
+	for(unsigned i = 0; i < strlen(str); i ++)
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
+}
 void drawPoints(const vector<Point>& points, float r, float g, float b)
 {
 	//glClearColor(1,1,1,1);
@@ -88,6 +96,7 @@ void drawLines(const vector<Line>& lines, float r, float g, float b)
 		glVertex2f(lines[i].start.x, lines[i].start.y);
 		glVertex2f(lines[i].end.x, lines[i].end.y);
 		glEnd();
+		writeLine(lines[i]);
 	}
 }
 
@@ -169,7 +178,7 @@ void processMouse(int button, int state, int x, int y)
 		{
 			if(isDrawing == false)
 			{
-				inLines.push_back(Line(Point(wx,wy),Point(wx,wy)));
+				inLines.push_back(Line(Point(wx,wy),Point(wx,wy),1));
 				isDrawing = true;
 			}
 		}
