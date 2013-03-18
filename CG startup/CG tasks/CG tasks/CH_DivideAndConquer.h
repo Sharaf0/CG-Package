@@ -25,7 +25,7 @@ class CH_DivideAndConquer : public Algorithm
 	pair<list<Point>::iterator, list<Point>::iterator>  buildUpperHull(list<Point>& A, list<Point>& B)
 	{
 		bool doneBuilding = false;
-		list<Point>::iterator after, before, iA = A.begin(), iB = B.begin();
+		list<Point>::iterator after, before, iA = max_element(A.begin(),A.end()), iB = min_element(B.begin(), B.end());
 		while(!doneBuilding)
 		{
 			doneBuilding = true;
@@ -34,10 +34,10 @@ class CH_DivideAndConquer : public Algorithm
 			{
 				after  = next(iB,B), before = prev(iB,B);
 				bool bNotChanged = true;
-				if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) < 0)
-					iB = before, bNotChanged = false;
-				else if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) < 0)
-					iB = after, bNotChanged = false;
+				if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) > 0)
+					iB = before, bNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) > 0)
+					iB = after, bNotChanged = doneBuilding = false;
 				if(bNotChanged)
 					break;
 			}
@@ -46,10 +46,10 @@ class CH_DivideAndConquer : public Algorithm
 			{
 				after = next(iA, A), before = prev(iA, A);
 				bool aNotChanged = true;
-				if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))>0)
-					iA = after, aNotChanged = false;
-				else if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))>0)
-					iA = before, aNotChanged = false;
+				if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))<0)
+					iA = after, aNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))<0)
+					iA = before, aNotChanged = doneBuilding = false;
 				if(aNotChanged)
 					break;
 			}
@@ -59,7 +59,7 @@ class CH_DivideAndConquer : public Algorithm
 	pair<list<Point>::iterator, list<Point>::iterator>  buildLowerHull(list<Point>& A, list<Point>& B)
 	{
 		bool doneBuilding = false;
-		list<Point>::iterator after, before, iA = A.begin(), iB = B.begin();
+		list<Point>::iterator after, before, iA = max_element(A.begin(),A.end()), iB = min_element(B.begin(), B.end());
 		while(!doneBuilding)
 		{
 			doneBuilding = true;
@@ -68,10 +68,10 @@ class CH_DivideAndConquer : public Algorithm
 			{
 				after  = next(iB,B), before = prev(iB,B);
 				bool bNotChanged = true;
-				if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) > 0)
-					iB = after, bNotChanged = false;
-				else if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) > 0)
-					iB = before, bNotChanged = false;
+				if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) < 0)
+					iB = after, bNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) < 0)
+					iB = before, bNotChanged = doneBuilding = false;
 				if(bNotChanged)
 					break;
 			}
@@ -80,10 +80,10 @@ class CH_DivideAndConquer : public Algorithm
 			{
 				after = next(iA, A), before = prev(iA, A);
 				bool aNotChanged = true;
-				if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))<0)
-					iA = before, aNotChanged = false;
-				else if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))<0)
-					iA = after, aNotChanged = false;
+				if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))>0)
+					iA = before, aNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))>0)
+					iA = after, aNotChanged = doneBuilding = false;
 				if(aNotChanged)
 					break;
 			}
