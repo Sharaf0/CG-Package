@@ -10,6 +10,7 @@
 #include <iostream>
 #include <set>
 #include <list>
+#include <map>
 
 using namespace std;
 
@@ -21,6 +22,14 @@ public:
 	static float dot2Vectors	(const Point& p1, const Point& p2)
 	{
 		return p1.x*p2.x+p1.y*p2.y;
+	}
+	static float magnitude		(const Point& p)
+	{
+		return hypot(p.x,p.y);
+	}
+	static Point normalize		(const Point& p)
+	{
+		return p/magnitude(p);
 	}
 	static float crossProduct	(const Point& p1, const Point& p2, const Point& p3)
 	{
@@ -107,6 +116,20 @@ public:
 			return false;
 		ret = ComputeLineIntersection(a, b, c, d);
 		return true;
+	}
+	static bool pointOnRay(const Point& a, const Point& b, const Point& p)
+	{
+		if(a==b)
+			return a==p;
+		Point v1 = normalize(b-a);
+		Point v2 = normalize(p-a);
+		return v1 == v2;
+	}
+	static bool pointOnSegment(const Point& a, const Point& b, const Point& p)
+	{
+        if (a == b)
+                return a==p;
+        return pointOnRay(a, b, p) && pointOnRay(b, a, p);
 	}
 };
 struct AngleComparer

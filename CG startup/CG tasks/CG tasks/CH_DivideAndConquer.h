@@ -33,11 +33,18 @@ class CH_DivideAndConquer : public Algorithm
 			while(1)
 			{
 				after  = next(iB,B), before = prev(iB,B);
+				//if(after==before)
+				//	break;
 				bool bNotChanged = true;
 				if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) > 0)
 					iB = before, bNotChanged = doneBuilding = false;
 				else if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) > 0)
 					iB = after, bNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) == 0)
+				{
+					if(Utilities::pointOnSegment((*iA), (*before), (*iB)))
+						iB = before, bNotChanged = doneBuilding = false;
+				}
 				if(bNotChanged)
 					break;
 			}
@@ -45,11 +52,18 @@ class CH_DivideAndConquer : public Algorithm
 			while(1)
 			{
 				after = next(iA, A), before = prev(iA, A);
+				//if(after==before)
+				//	break;
 				bool aNotChanged = true;
 				if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))<0)
 					iA = after, aNotChanged = doneBuilding = false;
 				else if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))<0)
 					iA = before, aNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))==0)
+				{
+					if(Utilities::pointOnSegment((*iB), (*after), (*iA)))
+						iA = after, aNotChanged = doneBuilding = false;
+				}
 				if(aNotChanged)
 					break;
 			}
@@ -67,11 +81,18 @@ class CH_DivideAndConquer : public Algorithm
 			while(1)
 			{
 				after  = next(iB,B), before = prev(iB,B);
+				//if(after==before)
+				//	break;
 				bool bNotChanged = true;
 				if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) < 0)
 					iB = after, bNotChanged = doneBuilding = false;
 				else if(Utilities::cross2Vectors((*iB)-(*iA),(*before)-(*iB)) < 0)
 					iB = before, bNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iB)-(*iA),(*after)-(*iB)) == 0)
+				{
+					if(Utilities::pointOnSegment((*iA), (*after), (*iB)))
+						iB = after, bNotChanged = doneBuilding = false;
+				}
 				if(bNotChanged)
 					break;
 			}
@@ -79,11 +100,18 @@ class CH_DivideAndConquer : public Algorithm
 			while(1)
 			{
 				after = next(iA, A), before = prev(iA, A);
+				//if(after==before)
+				//	break;
 				bool aNotChanged = true;
 				if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))>0)
 					iA = before, aNotChanged = doneBuilding = false;
 				else if(Utilities::cross2Vectors((*iA)-(*iB),(*after)-(*iA))>0)
 					iA = after, aNotChanged = doneBuilding = false;
+				else if(Utilities::cross2Vectors((*iA)-(*iB),(*before)-(*iA))==0)
+				{
+					if(Utilities::pointOnSegment((*iB), (*before), (*iA)))
+						iA = before, aNotChanged = doneBuilding = false;
+				}
 				if(aNotChanged)
 					break;
 			}
@@ -138,6 +166,8 @@ public:
 		vector<Point> inVector = inputPoints;
 		sort(inVector.begin(), inVector.end());
 		inVector.resize(unique(inVector.begin(),inVector.end())-inVector.begin());
+		if(inVector.size() < 3)
+			return;
 		for(unsigned i = 0; i < inVector.size(); i ++)
 			input.push_back(inVector[i]);
 		list<Point> output = getConvex(input);

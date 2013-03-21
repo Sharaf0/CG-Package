@@ -71,6 +71,9 @@
     <ClInclude Include="SL_BruteForce.h">
       <Filter>Algorithms\SweepLine</Filter>
     </ClInclude>
+    <ClInclude Include="SL_Utilities.h">
+      <Filter>Algorithms\SweepLine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />

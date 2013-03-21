@@ -32,8 +32,8 @@ static vector<Line>  inLines , outLines;
 #define OUT_POINT_COLOR_G 0.0
 #define OUT_POINT_COLOR_B 0.0
 
-#define OUT_LINE_COLOR_R 0.0
-#define OUT_LINE_COLOR_G 1.0
+#define OUT_LINE_COLOR_R 1.0
+#define OUT_LINE_COLOR_G 0.0
 #define OUT_LINE_COLOR_B 0.0
 
 
