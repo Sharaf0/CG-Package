@@ -22,6 +22,9 @@
     <Filter Include="Algorithms\SweepLine">
       <UniqueIdentifier>{83b89ba0-8d3c-41fa-9897-77fe0b9fbc0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithms\SweepLine\Line Intersections">
+      <UniqueIdentifier>{ade22205-beb5-4cf7-a0ae-b208d5ecafa5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.cpp">
@@ -65,14 +68,14 @@
     <ClInclude Include="CH_QuickHull.h">
       <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
-    <ClInclude Include="SL_BentleyOttman.h">
+    <ClInclude Include="SL_Utilities.h">
       <Filter>Algorithms\SweepLine</Filter>
     </ClInclude>
     <ClInclude Include="SL_BruteForce.h">
-      <Filter>Algorithms\SweepLine</Filter>
+      <Filter>Algorithms\SweepLine\Line Intersections</Filter>
     </ClInclude>
-    <ClInclude Include="SL_Utilities.h">
-      <Filter>Algorithms\SweepLine</Filter>
+    <ClInclude Include="SL_BentleyOttman.h">
+      <Filter>Algorithms\SweepLine\Line Intersections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

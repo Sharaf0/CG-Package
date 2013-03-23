@@ -46,6 +46,7 @@ int height = 600;
 int Point::drawID = 1;
 int Line::drawID  = 1;
 Point AngleComparer::about = Point(0,0);
+int EventPoint::eventID = 0;
 
 void writePoint(const Point& p)
 {
