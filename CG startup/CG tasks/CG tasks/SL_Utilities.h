@@ -14,18 +14,4 @@ public:
 	
 };
 
-struct EventPointComparer
-{
-	bool operator()(const EventPoint* lhs, const EventPoint* rhs)const
-	{
-		if (lhs->currentPoint.x != rhs->currentPoint.x) 
-			return lhs->currentPoint.x < rhs->currentPoint.x;
-		if (lhs->currentPoint.y != rhs->currentPoint.y)
-			return lhs->currentPoint.y < rhs->currentPoint.y;
-		if(lhs->eventType != rhs->eventType)
-			return lhs->eventType < rhs->eventType;
-		return lhs->id < rhs->id;
-	}
-};
-
 #endif

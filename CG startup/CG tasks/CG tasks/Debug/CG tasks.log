@@ -1,4 +1,4 @@
-﻿Build started 3/23/2013 4:00:13 PM.
+﻿Build started 3/24/2013 7:25:00 AM.
      1>Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" on node 2 (rebuild target(s)).
      1>_PrepareForClean:
          Deleting file "Debug\CG tasks.lastbuildstate".
@@ -24,23 +24,23 @@
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_incremental.h(51): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_divideandconquer.h(154): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\ch_divideandconquer.h(155): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(161): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(160): warning C4101: 'e2' : unreferenced local variable
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(160): warning C4101: 'e1' : unreferenced local variable
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(204): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(203): warning C4101: 'e2' : unreferenced local variable
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\sl_bentleyottman.h(203): warning C4101: 'e1' : unreferenced local variable
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(57): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(66): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(129): warning C4390: ';' : empty controlled statement found; is this the intent?
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(290): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(291): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\time.inl(112) : see declaration of 'localtime'
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(304): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(305): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(315): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(316): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(336): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(337): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(339): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(340): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
          Algorithm.h
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\utilities.h(28): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
@@ -73,4 +73,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.03
+Time Elapsed 00:00:07.12
