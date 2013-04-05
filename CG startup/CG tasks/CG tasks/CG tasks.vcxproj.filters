@@ -68,9 +68,6 @@
     <ClInclude Include="CH_QuickHull.h">
       <Filter>Algorithms\ConvexHull</Filter>
     </ClInclude>
-    <ClInclude Include="SL_Utilities.h">
-      <Filter>Algorithms\SweepLine</Filter>
-    </ClInclude>
     <ClInclude Include="SL_BruteForce.h">
       <Filter>Algorithms\SweepLine\Line Intersections</Filter>
     </ClInclude>

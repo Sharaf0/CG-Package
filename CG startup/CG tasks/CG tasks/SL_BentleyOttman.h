@@ -1,14 +1,32 @@
 #pragma once
 #ifndef SL_BENTLEYOTTMAN
 #define SL_BENTLEYOTTMAN
-#include "SL_Utilities.h"
+#include <algorithm>
+#include <gl/gl.h>
+#include <gl/glut.h>
+#include <Windows.h>
 
-#define lineIt set<pair<Point,Line>, ActiveLinesComparer>::iterator
-#define mp(a,b) make_pair(a,b)
-#define LEFT_END_EVENT 0
-#define INTERSECTION_EVENT 1
-#define RIGHT_END_EVENT 2
+#define lineIt set<Line, ActiveLinesComparer>::iterator
 
+enum EVENT_TYPE
+{
+	LEFT_END_EVENT,
+	INTERSECTION_EVENT,
+	RIGHT_END_EVENT
+};
+
+struct EventPoint
+{
+public:
+	Point currentPoint;
+	EVENT_TYPE eventType;//used to sort
+	int id;
+	static int eventID;
+	virtual void handleTransition() = 0;
+	virtual Line getCurrentLine() const = 0;
+};
+
+EventPoint* currentEvent;
 
 bool isPointLessY(const Point& a, const Point& b)
 {
@@ -17,13 +35,20 @@ bool isPointLessY(const Point& a, const Point& b)
 	return a.y < b.y;
 }
 
+float getCurrentY(const Line& l)
+{
+	Point p;
+	Utilities::computeSegmentIntersection(Point(currentEvent->currentPoint.x, -2000), Point(currentEvent->currentPoint.x, 2000), l.start, l.end, p);
+	return p.y;
+}
+
 struct EventPointComparer
 {
 	bool operator()(const EventPoint* lhs, const EventPoint* rhs)const
 	{
-		if (lhs->currentPoint.x != rhs->currentPoint.x) 
+		if (fabs(lhs->currentPoint.x - rhs->currentPoint.x) >= 1e-3)//if (lhs->currentPoint.x != rhs->currentPoint.x)
 			return lhs->currentPoint.x < rhs->currentPoint.x;
-		if (lhs->currentPoint.y != rhs->currentPoint.y)
+		if (fabs(lhs->currentPoint.y - rhs->currentPoint.y) >= 1e-3)//if (lhs->currentPoint.y != rhs->currentPoint.y)
 			return lhs->currentPoint.y < rhs->currentPoint.y;
 		if(lhs->eventType != rhs->eventType)
 			return lhs->eventType < rhs->eventType;
@@ -33,44 +58,72 @@ struct EventPointComparer
 
 struct ActiveLinesComparer
 {
-	bool operator()(const pair<Point, Line>& lhs, const pair<Point, Line>& rhs)const
+	bool operator()(const Line lhs, const Line rhs)const
 	{
-		if(lhs.first == rhs.first)
-			return lhs.second < rhs.second;
-		return isPointLessY(lhs.first, rhs.first);
+		if(lhs.lineDrawID == rhs.lineDrawID)
+			return false;
+		float l = getCurrentY(lhs);
+		float r = getCurrentY(rhs);
+		if(fabs(l-r)>1e-3)//( l != r)
+			return l < r;
+		if(lhs.start == rhs.start)
+			return isPointLessY(lhs.end, rhs.end);
+		if(lhs.end == rhs.end)
+			return isPointLessY(lhs.start, rhs.start);
+		if(currentEvent->eventType == INTERSECTION_EVENT || lhs.end == rhs.start || lhs.start == rhs.end)
+		{
+			Line yAxis(currentEvent->currentPoint, Point(currentEvent->currentPoint.x, currentEvent->currentPoint.y+1));
+			float lhsAngle = Utilities::getAngle2Vectors(yAxis, Line(currentEvent->currentPoint, lhs.end));
+			float rhsAngle = Utilities::getAngle2Vectors(yAxis, Line(currentEvent->currentPoint, rhs.end));
+			
+			lhsAngle=max(lhsAngle, 0);
+			rhsAngle=max(rhsAngle, 0);
+
+			return lhsAngle > rhsAngle;
+		}
+		//Supposed not to be reached
+		return lhs.lineDrawID < rhs.lineDrawID;
+		/*
+		char* koko=new char[20];
+		sprintf(koko, "%s @ %d", eventNames[currentEvent->eventType].c_str(), currentEvent->getCurrentLine().lineDrawID);
+		MessageBox(NULL,koko,"Warning",MB_OK);
+		delete koko;
+		return lhs.lineDrawID < rhs.lineDrawID;
+		*/
 	}
 };
 
-map<Line, Point> linesRank;
-set< pair<Point, Line>, ActiveLinesComparer > active;
+map<pair<int, int>, bool> checkedBefore;
+set< Line, ActiveLinesComparer > active;
 set<EventPoint*, EventPointComparer> events;
 set<Point> intersections;
 
-void checkIntersecion(Line, Line, float, bool);
-//void printSet()
-//{
-//	cout<<"------------------------------"<<endl;
-//	for(set<EventPoint*, EventPointComparer>::iterator i = events.begin(); i != events.end(); i ++)
-//	{
-//		cout<<"("<<(*i)->currentPoint.x<<","<<(*i)->currentPoint.y<<")"<<endl;
-//	}
-//}
-//void printActive()
-//{
-//	cout<<"Active"<<endl;
-//	for(set<pair<Point,Line>,ActiveLinesComparer>::iterator i = active.begin(); i!=active.end();i++)
-//		cout<<i->first<<":"<<i->second<<endl;
-//}
-
-void printIterator(lineIt l)
+void drawSweep(float x)
 {
-	cout<<l->first<<" "<<l->second<<endl;
+	glFlush();
+	glBegin(GL_LINES);
+	glColor3f(0.5,0.5,1);
+	glLineWidth(5.0);
+	glVertex2f(x, -1000);
+	glVertex2f(x,  1000);
+	glEnd();
+	glFlush();
 }
+set<Line, ActiveLinesComparer>::iterator findActiveLine(int id)
+{
+	set<Line, ActiveLinesComparer>::iterator it = active.begin();
+	for(;it!=active.end();it++)
+		if(it->lineDrawID == id)
+			return it;
+	return it;
+}
+void checkIntersecion(Line, Line, bool);
 
 struct LeftEndPoint : public EventPoint
 {
 public:
 	Line currentLine;
+	LeftEndPoint(){}
 	LeftEndPoint(Line _l)
 	{
 		currentLine = _l;
@@ -83,32 +136,33 @@ public:
 		if(currentLine.isVertical())
 		{
 			for(lineIt i = active.begin(); i != active.end(); i ++)
-				checkIntersecion(currentLine, i->second, currentPoint.x, false);
+				checkIntersecion(currentLine, *i, true);
 		}
 		else
 		{
-			linesRank[currentLine] = currentPoint;
-			//printActive();
-			lineIt currentIterator = active.insert(mp(currentPoint, currentLine)).first;
-			//printActive();
-			//printIterator(currentIterator);
+			lineIt currentIterator = active.insert(currentLine).first;
+			
 			lineIt before, after;
 			before = after = currentIterator;
 			before--;
 			after ++;
-			//printIterator(before);
-			//printIterator(after);
+			
 			if(after!=active.end())
-				checkIntersecion(after->second, currentIterator->second, currentPoint.x, true);
+				checkIntersecion(*after, *currentIterator, false);
 			if(before!=active.end())
-				checkIntersecion(before->second, currentIterator->second, currentPoint.x, true);
+				checkIntersecion(*before, *currentIterator, false);
 		}
+	}
+	Line getCurrentLine()const
+	{
+		return currentLine;
 	}
 };
 
 struct RightEndPoint : public EventPoint
 {
 	Line currentLine;
+	RightEndPoint(){}
 	RightEndPoint(Line _l)
 	{
 		currentLine = _l;
@@ -120,22 +174,25 @@ struct RightEndPoint : public EventPoint
 	{
 		if(currentLine.isVertical())
 			return;
-		Point lineRank = linesRank[currentLine];
-		lineIt currentIterator = active.find(mp(lineRank,currentLine));
+		lineIt currentIterator = findActiveLine(currentLine.lineDrawID);
 		lineIt before, after;
 		before = after = currentIterator;
 		before--; after++;
-		//printActive();
 		active.erase(currentIterator);
-		//printActive();
+		
 		if(after!=active.end() && before!=active.end())
-			checkIntersecion(before->second, after->second, currentPoint.x, true);
+			checkIntersecion(*before, *after, false);
+	}
+	Line getCurrentLine()const
+	{
+		return currentLine;
 	}
 };
 
 struct Intersection : public EventPoint
 {
 	Line firstLine, secondLine;
+	Intersection(){}
 	Intersection(Line _l1, Line _l2, Point _p)
 	{
 		firstLine = _l1, secondLine = _l2, currentPoint = _p;
@@ -144,53 +201,43 @@ struct Intersection : public EventPoint
 	}
 	void handleTransition()
 	{
-		Point firstLineRank, secondLineRank;
-		firstLineRank  = linesRank[firstLine];
-		secondLineRank = linesRank[secondLine];
-		lineIt upper = active.find(mp(firstLineRank ,firstLine ));
-		lineIt lower = active.find(mp(secondLineRank,secondLine));
+		lineIt upper = findActiveLine(firstLine .lineDrawID);
+		lineIt lower = findActiveLine(secondLine.lineDrawID);
 
-		swap(linesRank[firstLine], linesRank[secondLine]);
-
-		//printActive();
 		active.erase(upper);
-		//printActive();
 		active.erase(lower);
-		//printActive();
 
-		upper = active.insert(mp(secondLineRank, firstLine )).first;
-		//printActive();
-		lower = active.insert(mp(firstLineRank , secondLine)).first;
-		//printActive();
-
-		if(isPointLessY(secondLineRank, firstLineRank))
-			swap(upper, lower);
+		upper = active.insert(firstLine).first;
+		lower = active.insert(secondLine).first;
 
 		lineIt upperOfUpper = upper, lowerOfLower = lower;
 		upperOfUpper++, lowerOfLower --;
 
 		if(upper != active.end() && upperOfUpper != active.end())
-			checkIntersecion(upper->second, upperOfUpper->second, currentPoint.x, true);
+			checkIntersecion(*upper, *upperOfUpper, false);
 
 		if(lower != active.end() && lowerOfLower != active.end())
-			checkIntersecion(lower->second, lowerOfLower->second, currentPoint.x, true);
+			checkIntersecion(*lower, *lowerOfLower, false);
+	}
+	Line getCurrentLine()const
+	{
+		return firstLine;
 	}
 };
 
-
-void checkIntersecion(Line l1, Line l2, float curX, bool notVertical=true)
+void checkIntersecion(Line l1, Line l2, bool isVertical)
 {
+	if(checkedBefore[make_pair(l1.lineDrawID,l2.lineDrawID)]==true)
+		return;
+	checkedBefore[make_pair(l1.lineDrawID,l2.lineDrawID)]=true;
 	Point intersectionPoint;
 	if(Utilities::computeSegmentIntersection(l1.start,l1.end,l2.start,l2.end,intersectionPoint))
 	{
-		if(intersectionPoint.x <= curX && notVertical)
-			return;
-		intersections.insert(intersectionPoint);
-		if(notVertical)
+		intersections.insert(intersectionPoint).second ;
+		if(!isVertical)
 			events.insert(new Intersection(l1, l2, intersectionPoint));
 	}
 }
-
 class SL_BentleyOttman : public Algorithm
 {
 public:
@@ -199,22 +246,25 @@ public:
 	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines,
 		vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
+		checkedBefore.clear();
+		active.clear();
+		events.clear();
+		intersections.clear();
 		vector<Line> inputSegments = inputLines;
-		EventPoint *e1, *e2;
+		sort(inputSegments.begin(), inputSegments.end());
+		inputSegments.resize(unique(inputSegments.begin(), inputSegments.end())-inputSegments.begin());
 		for(int i = 0; i < inputSegments.size(); i ++)
 		{
 			inputSegments[i].handleOrder();
 			events.insert( new LeftEndPoint (inputSegments[i]) );
 			events.insert( new RightEndPoint(inputSegments[i]) );
-			//printSet();
 		}
-		EventPoint *e;
 		while(events.size())
 		{
-			e = (*events.begin());
+			currentEvent = (*events.begin());
+			//drawSweep(currentEvent->currentPoint.x);
 			events.erase(events.begin());
-			e->handleTransition();
-			//printSet();
+			currentEvent->handleTransition();
 		}
 
 		outputPoints = vector<Point>(intersections.begin(), intersections.end());
@@ -223,3 +273,24 @@ public:
 
 #endif
 
+/*For Testing Routines
+
+void printActive()
+{
+	system("cls");
+	cout<<eventNames[currentEvent->eventType]<<": "<<currentEvent->getCurrentLine().lineDrawID<<endl;
+	cout<<"Active"<<endl;
+	for(set<Line,ActiveLinesComparer>::iterator i = active.begin(); i!=active.end();i++)
+		cout<<i->lineDrawID<<endl;
+}
+string eventNames[] = {"LEFT","INTERSECTION","RIGHT"};
+void printSet()
+{
+	cout<<"------------------------------"<<endl;
+	for(set<EventPoint*, EventPointComparer>::iterator i = events.begin(); i != events.end(); i ++)
+	{
+		cout<<"("<<(*i)->currentPoint.x<<","<<(*i)->currentPoint.y<<")"<<endl;
+	}
+}
+
+*/

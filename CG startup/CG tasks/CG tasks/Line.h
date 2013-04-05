@@ -35,9 +35,15 @@ public:
 		start	= startPoint < endPoint ? startPoint : endPoint;
 		end		= startPoint > endPoint ? startPoint : endPoint;
 	}
+	//bool operator < (const Line& l)const
+	//{
+	//	return this->lineDrawID < l.lineDrawID;
+	//}
 	bool operator < (const Line& l)const
 	{
-		return this->lineDrawID < l.lineDrawID;
+		if(start == l.start)
+			return end < l.end;
+		return start < l.start;
 	}
 	friend std::ostream & operator<<(std::ostream &os, const Line& l)
 	{

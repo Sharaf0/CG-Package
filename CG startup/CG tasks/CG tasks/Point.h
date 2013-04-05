@@ -16,10 +16,20 @@ public:
 	}
 	//based on x, if tie then y
 	bool operator <(const Point &p) const
-	{return x < p.x || (x == p.x && y < p.y);}
+	{
+		if(fabs(x - p.x) <= 1e-3)
+			return y < p.y;
+		return x < p.x;
+		//return x < p.x || (x == p.x && y < p.y);
+	}
 
 	bool operator > (const Point& p) const
-	{return x > p.x || (x == p.x && y > p.y);}
+	{
+		if(fabs(x - p.x) <= 1e-3)
+			return y > p.y;
+		return x > p.x;
+		//return x > p.x || (x == p.x && y > p.y);
+	}
 
 	Point operator + (const Point &p) const
 	{return Point(x+p.x, y+p.y);}
@@ -34,7 +44,7 @@ public:
 	{ return Point(x/c,y/c);}
 
 	bool operator ==(const Point &p)const
-	{return p.x==this->x && p.y==this->y;}
+	{return fabs(p.x-this->x)<1e-3 && fabs(p.y-this->y)<1e-3;}
 	
 	bool operator !=(const Point &p)const
 	{return (p.x!=this->x || p.y!=this->y); }

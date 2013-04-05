@@ -25,7 +25,7 @@ static vector<Line>  inLines , outLines;
 #define DEFAULT_POINT_COLOR_B 0.0
 
 #define DEFAULT_LINE_COLOR_R 0.0
-#define DEFAULT_LINE_COLOR_G 0.0
+#define DEFAULT_LINE_COLOR_G 0.5
 #define DEFAULT_LINE_COLOR_B 0.0
 
 #define OUT_POINT_COLOR_R 1.0
@@ -343,21 +343,45 @@ void saveData()
 	writePointsInFile(ownPath);
 	writeLinesInFile(ownPath);
 }
+clock_t algorithmBegin, algorithmEnd;
+char timeNow[10];
 void runAlgorithms(int choice)
 {
 	saveData();
 	Algorithm* algorithm = AlgorithmFactory::createAlgorithm(algorithmsNames[choice]);
 	outPoints.clear(), outLines.clear();
+	algorithmBegin = clock();
 	algorithm->run(inPoints,inLines,outPoints,outLines);
-	//MessageBox(NULL,"DONE ya kbeer :D","Warning",MB_OK);
-	//Todo: calculate time spent in the algorithm..
+	algorithmEnd = clock();
+	sprintf(timeNow, "Done in: %f", (1.0*algorithmEnd - 1.0*algorithmBegin)/CLOCKS_PER_SEC);
+	MessageBox(NULL,timeNow,"Algorithm Done",MB_OK);
 	drawPoints(outPoints,OUT_POINT_COLOR_R,OUT_POINT_COLOR_G,OUT_POINT_COLOR_B);
 	drawLines(outLines,OUT_LINE_COLOR_R,OUT_LINE_COLOR_G,OUT_LINE_COLOR_B);
 	glFlush();
 }
+inline Point getRandomDrawnPoint()
+{
+	return Point(rand()%width, rand()%height, 1);
+}
+inline Point getRandomPoint()
+{
+	return Point(rand()%width, rand()%height);
+}
+void generateRandom(int choice)
+{
+	if(choice==0)//Points
+		for(int i = 0; i < 100; i ++)
+			inPoints.push_back(getRandomDrawnPoint());
+
+	if(choice==1)//Lines
+		for(int i = 0; i < 100; i ++)
+			inLines.push_back(Line(getRandomPoint(), getRandomPoint(), 1));
+	
+	OnDisplay();
+}
 void initMenus()
 {
-	int drawingSubmenu, openFileSubmenu, algorithmsSubmenu;
+	int drawingSubmenu, openFileSubmenu, generateRandomSubmenu, algorithmsSubmenu;
 
 	drawingSubmenu = glutCreateMenu(selectDrawingMode);
 	glutAddMenuEntry("Point", 0);
@@ -372,9 +396,14 @@ void initMenus()
 	for(unsigned i = 0; i < ALGORITHMS_NUM; i ++)
 		glutAddMenuEntry(algorithmsNames[i].c_str(),i);
 
+	generateRandomSubmenu = glutCreateMenu(generateRandom);
+	glutAddMenuEntry("Points", 0);
+	glutAddMenuEntry("Lines", 1);
+
 	glutCreateMenu(mainMenu);
 	glutAddSubMenu("Drawing Mode", drawingSubmenu);
 	glutAddSubMenu("Run Algorithm", algorithmsSubmenu);
+	glutAddSubMenu("Generate Random", generateRandomSubmenu);
 	glutAddSubMenu("Import Data", openFileSubmenu);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
