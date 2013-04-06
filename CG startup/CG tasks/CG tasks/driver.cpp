@@ -15,8 +15,13 @@
 static vector<Point> inPoints, outPoints;
 static vector<Line>  inLines , outLines;
 
-#define POINT_MODE 1
-#define LINE_MODE  2
+enum DRAWING_MODES
+{
+	NONE,
+	POINT_MODE,
+	LINE_MODE,
+	POLYGON_MODE
+};
 
 #define POINT_SIZE 3
 
@@ -37,9 +42,9 @@ static vector<Line>  inLines , outLines;
 #define OUT_LINE_COLOR_B 0.0
 
 
-int DRAWING_MODE;
-bool isDrawing;
+DRAWING_MODES MY_DRAWING_MODE;
 
+bool isDrawingLine;
 int width = 600;
 int height = 600;
 
@@ -71,7 +76,7 @@ void drawPoints(const vector<Point>& points, float r, float g, float b)
 {
 	//glClearColor(1,1,1,1);
 	//glClear(GL_COLOR_BUFFER_BIT);
-	
+
 	glColor3f(r,g,b);
 	glPointSize(POINT_SIZE);
 	glBegin(GL_POINTS);
@@ -171,22 +176,29 @@ void processMouse(int button, int state, int x, int y)
 	//cout<<wx<<" "<<wy<<endl;
 	if(button==GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		if(DRAWING_MODE == POINT_MODE)
+		if(MY_DRAWING_MODE == POINT_MODE)
 		{
 			inPoints.push_back(Point(wx,wy,1));
 		}
-		if(DRAWING_MODE == LINE_MODE)
+		if(MY_DRAWING_MODE == LINE_MODE)
 		{
-			if(isDrawing == false)
+			if(isDrawingLine == false)
 			{
 				inLines.push_back(Line(Point(wx,wy),Point(wx,wy),1));
-				isDrawing = true;
+				isDrawingLine = true;
 			}
+		}
+		if(MY_DRAWING_MODE == POLYGON_MODE)
+		{
+				if(inLines.size())
+					inLines.push_back(Line(inLines[inLines.size()-1].end,Point(wx,wy),1));
+				else
+					inLines.push_back(Line(Point(wx,wy),Point(wx,wy),1));
 		}
 		OnDisplay();
 	}
-	if(button==GLUT_LEFT_BUTTON && state == GLUT_UP && DRAWING_MODE==LINE_MODE&&isDrawing==true)
-		isDrawing = false;
+	if(button==GLUT_LEFT_BUTTON && state == GLUT_UP && MY_DRAWING_MODE==LINE_MODE&&isDrawingLine==true)
+		isDrawingLine = false;
 }
 /**
 Handles the mouse move event. This event is triggered whenever we move with
@@ -197,10 +209,11 @@ void processMouseMove(int x, int y)
 {
 	float wx = x;
 	float wy = height - y;
-	if(isDrawing)
+	if(isDrawingLine || MY_DRAWING_MODE == POLYGON_MODE)
 	{
 		inLines[inLines.size()-1].end = Point(wx,wy);
 		OnDisplay();
+		return;
 	}
 }
 /**
@@ -222,6 +235,16 @@ void processKeyboard(unsigned char key, int x, int y)
 		glFlush();
 		Point::drawID=1;
 		Line ::drawID=1;
+		MY_DRAWING_MODE = NONE;
+	}
+	if(key == 'p')
+	{
+		if(!inLines.size())
+			return;
+		Line temp(inLines[inLines.size()-1].end, inLines[0].start,1);
+		inLines.push_back(temp);
+		MY_DRAWING_MODE = NONE;
+		OnDisplay();
 	}
 	if(key == 27)//Escape
 	{
@@ -244,10 +267,10 @@ void reshape(int newWidth, int newHeight)
 }
 void selectDrawingMode(int choice)
 {
-	if(choice==0)
-		DRAWING_MODE = POINT_MODE;
-	if(choice==1)
-		DRAWING_MODE = LINE_MODE;
+	if(MY_DRAWING_MODE == NONE || choice == MY_DRAWING_MODE)
+		MY_DRAWING_MODE = (DRAWING_MODES)choice;
+	else
+		MessageBox(NULL, "Clear First", "Warning", MB_OK);
 }
 void openFileType(int choice)
 {
@@ -335,7 +358,7 @@ void saveData()
 		ownPath[strlen(ownPath)-1] = '\0';
 	//If log directory doesn't exist
 	strcat(ownPath,"log");
-	
+
 	CreateDirectory(ownPath,NULL);
 	strcat(ownPath, now.c_str());
 	CreateDirectory(ownPath, NULL);
@@ -376,7 +399,7 @@ void generateRandom(int choice)
 	if(choice==1)//Lines
 		for(int i = 0; i < 100; i ++)
 			inLines.push_back(Line(getRandomPoint(), getRandomPoint(), 1));
-	
+
 	OnDisplay();
 }
 void initMenus()
@@ -384,8 +407,9 @@ void initMenus()
 	int drawingSubmenu, openFileSubmenu, generateRandomSubmenu, algorithmsSubmenu;
 
 	drawingSubmenu = glutCreateMenu(selectDrawingMode);
-	glutAddMenuEntry("Point", 0);
-	glutAddMenuEntry("Line", 1);
+	glutAddMenuEntry("Point"	, POINT_MODE);
+	glutAddMenuEntry("Line"		, LINE_MODE);
+	glutAddMenuEntry("Polygon"	, POLYGON_MODE);
 
 	openFileSubmenu = glutCreateMenu(openFileType);
 	glutAddMenuEntry("Points",0);
@@ -426,9 +450,9 @@ void InitGraphics(int argc, char *argv[]) {
 	glutMotionFunc(processMouseMove);
 	glutKeyboardFunc(processKeyboard);
 	initMenus();
-	//initially drawing mode is points
-	DRAWING_MODE = POINT_MODE;
-	isDrawing = false;
+	//initially drawing mode is none
+	MY_DRAWING_MODE = NONE; 
+	isDrawingLine = false;
 	glutMainLoop();
 }
 
