@@ -25,6 +25,15 @@
     <Filter Include="Algorithms\SweepLine\Line Intersections">
       <UniqueIdentifier>{ade22205-beb5-4cf7-a0ae-b208d5ecafa5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithms\Triangulation">
+      <UniqueIdentifier>{7bd6268c-7c72-4948-8c4b-e227cbc686db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithms\Triangulation\Special Polygons">
+      <UniqueIdentifier>{e6de0c07-1af2-4805-b692-006f24422a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithms\Triangulation\Ordainary Polygons">
+      <UniqueIdentifier>{52cf15dd-89e3-4a39-bed8-d5763a7a9973}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.cpp">
@@ -73,6 +82,18 @@
     </ClInclude>
     <ClInclude Include="SL_BentleyOttman.h">
       <Filter>Algorithms\SweepLine\Line Intersections</Filter>
+    </ClInclude>
+    <ClInclude Include="TR_InsertingDiagonals.h">
+      <Filter>Algorithms\Triangulation\Ordainary Polygons</Filter>
+    </ClInclude>
+    <ClInclude Include="TR_SubtractingEars.h">
+      <Filter>Algorithms\Triangulation\Ordainary Polygons</Filter>
+    </ClInclude>
+    <ClInclude Include="TR_TriangulateConvex.h">
+      <Filter>Algorithms\Triangulation\Special Polygons</Filter>
+    </ClInclude>
+    <ClInclude Include="TR_TriangulateMonotone.h">
+      <Filter>Algorithms\Triangulation\Special Polygons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

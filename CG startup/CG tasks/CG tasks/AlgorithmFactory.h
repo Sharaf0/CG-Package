@@ -2,6 +2,7 @@
 #ifndef ALGORITHMFACTORY
 #define ALGORITHMFACTORY
 
+//Convex Hull
 #include "CH_ExtremePoints.h"
 #include "CH_JarvisMarch.h"
 #include "CH_ExtremeSegments.h"
@@ -9,12 +10,18 @@
 #include "CH_GrahamHull.h"
 #include "CH_Incremental.h"
 #include "CH_DivideAndConquer.h"
+//Sweep Line
 #include "SL_BentleyOttman.h"
 #include "SL_BruteForce.h"
+//Triangulation
+#include "TR_InsertingDiagonals.h"
+#include "TR_SubtractingEars.h"
+#include "TR_TriangulateConvex.h"
+#include "TR_TriangulateMonotone.h"
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 9;
+const int ALGORITHMS_NUM = 13;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
@@ -23,7 +30,11 @@ string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_Incremental",
 							"CH_DivideAndConquer",
 							"SL_BentleyOttman",
-							"SL_BruteForce"
+							"SL_BruteForce",
+							"TR_InsertingDiagonals",
+							"TR_SubtractingEars",
+							"TR_TriangulateConvex",
+							"TR_TriangulateMonotone"
 							};
 
 class AlgorithmFactory
@@ -49,6 +60,15 @@ public:
 			return new SL_BentleyOttman();
 		if(type=="SL_BruteForce")
 			return new SL_BruteForce();
+		if(type=="TR_InsertingDiagonals")
+			return new TR_InsertingDiagonals();
+		if(type=="TR_SubtractingEars")
+			return new TR_SubtractingEars();
+		if(type=="TR_TriangulateConvex")
+			return new TR_ConvexTriangulation();
+		if(type=="TR_TriangulateMonotone")
+			return new TR_MonotoneTriangulation();
+
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;

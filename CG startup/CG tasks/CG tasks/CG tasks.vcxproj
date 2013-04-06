@@ -89,10 +89,14 @@
     <ClInclude Include="CH_JarvisMarch.h" />
     <ClInclude Include="AlgorithmFactory.h" />
     <ClInclude Include="CH_QuickHull.h" />
+    <ClInclude Include="TR_InsertingDiagonals.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="SL_BentleyOttman.h" />
     <ClInclude Include="SL_BruteForce.h" />
+    <ClInclude Include="TR_SubtractingEars.h" />
+    <ClInclude Include="TR_TriangulateConvex.h" />
+    <ClInclude Include="TR_TriangulateMonotone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />
