@@ -150,7 +150,7 @@ ALL rendering code should be written here.
 */
 void OnDisplay() {
 	//set the background color to white
-	glClearColor(1, 1, 1, 1);
+	glClearColor(0, 0, 0, 1);
 	//fill the whole color buffer with the clear color
 	glClear(GL_COLOR_BUFFER_BIT);
 	SetTransformations();
@@ -211,6 +211,8 @@ void processMouseMove(int x, int y)
 	float wy = height - y;
 	if(isDrawingLine || MY_DRAWING_MODE == POLYGON_MODE)
 	{
+		if(!inLines.size())
+			return;
 		inLines[inLines.size()-1].end = Point(wx,wy);
 		OnDisplay();
 		return;
@@ -235,6 +237,7 @@ void processKeyboard(unsigned char key, int x, int y)
 		glFlush();
 		Point::drawID=1;
 		Line ::drawID=1;
+		isDrawingLine = false;
 		MY_DRAWING_MODE = NONE;
 	}
 	if(key == 'p')
