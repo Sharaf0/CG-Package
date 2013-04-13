@@ -25,6 +25,10 @@ enum DRAWING_MODES
 
 #define POINT_SIZE 3
 
+#define BACKGROUND_R 0.0
+#define BACKGROUND_G 0.0
+#define BACKGROUND_B 0.0
+
 #define DEFAULT_POINT_COLOR_R 0.0
 #define DEFAULT_POINT_COLOR_G 1.0
 #define DEFAULT_POINT_COLOR_B 0.0
@@ -150,7 +154,7 @@ ALL rendering code should be written here.
 */
 void OnDisplay() {
 	//set the background color to white
-	glClearColor(0, 0, 0, 1);
+	glClearColor(BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, 1);
 	//fill the whole color buffer with the clear color
 	glClear(GL_COLOR_BUFFER_BIT);
 	SetTransformations();
@@ -232,7 +236,7 @@ void processKeyboard(unsigned char key, int x, int y)
 		inLines.clear();
 		outPoints.clear();
 		outLines.clear();
-		glClearColor(1,1,1,1);
+		glClearColor(BACKGROUND_R,BACKGROUND_G,BACKGROUND_B,1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glFlush();
 		Point::drawID=1;
