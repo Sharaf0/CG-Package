@@ -98,6 +98,9 @@
     <ClInclude Include="TR_TriangulateMonotone.h">
       <Filter>Algorithms\Triangulation\Special Polygons</Filter>
     </ClInclude>
+    <ClInclude Include="TR_MonotonePartitioning.h">
+      <Filter>Algorithms\Triangulation\Ordainary Polygons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\New Text Document.t" />

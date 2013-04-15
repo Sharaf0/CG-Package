@@ -6,45 +6,45 @@
 #include <gl/glut.h>
 #include <Windows.h>
 
-#define lineIt set<Line, ActiveLinesComparer>::iterator
+#define lineIt set<Line, BO_ActiveLinesComparer>::iterator
 
-enum EVENT_TYPE
+enum BO_EVENT_TYPE
 {
 	LEFT_END_EVENT,
 	INTERSECTION_EVENT,
 	RIGHT_END_EVENT
 };
 
-struct EventPoint
+struct BO_EventPoint
 {
 public:
 	Point currentPoint;
-	EVENT_TYPE eventType;//used to sort
+	BO_EVENT_TYPE eventType;//used to sort
 	int id;
 	static int eventID;
 	virtual void handleTransition() = 0;
 	virtual Line getCurrentLine() const = 0;
 };
 
-EventPoint* currentEvent;
+BO_EventPoint* currentEvent;
 
-bool isPointLessY(const Point& a, const Point& b)
+bool BO_isPointLessY(const Point& a, const Point& b)
 {
 	if(a.y==b.y)
 		return a.x > b.x;
 	return a.y < b.y;
 }
 
-float getCurrentY(const Line& l)
+float BO_getCurrentY(const Line& l)
 {
 	Point p;
 	Utilities::computeSegmentIntersection(Point(currentEvent->currentPoint.x, -2000), Point(currentEvent->currentPoint.x, 2000), l.start, l.end, p);
 	return p.y;
 }
 
-struct EventPointComparer
+struct BO_EventPointComparer
 {
-	bool operator()(const EventPoint* lhs, const EventPoint* rhs)const
+	bool operator()(const BO_EventPoint* lhs, const BO_EventPoint* rhs)const
 	{
 		if (fabs(lhs->currentPoint.x - rhs->currentPoint.x) >= 1e-3)//if (lhs->currentPoint.x != rhs->currentPoint.x)
 			return lhs->currentPoint.x < rhs->currentPoint.x;
@@ -56,20 +56,20 @@ struct EventPointComparer
 	}
 };
 
-struct ActiveLinesComparer
+struct BO_ActiveLinesComparer
 {
 	bool operator()(const Line lhs, const Line rhs)const
 	{
 		if(lhs.lineDrawID == rhs.lineDrawID)
 			return false;
-		float l = getCurrentY(lhs);
-		float r = getCurrentY(rhs);
+		float l = BO_getCurrentY(lhs);
+		float r = BO_getCurrentY(rhs);
 		if(fabs(l-r)>1e-3)//( l != r)
 			return l < r;
 		if(lhs.start == rhs.start)
-			return isPointLessY(lhs.end, rhs.end);
+			return BO_isPointLessY(lhs.end, rhs.end);
 		if(lhs.end == rhs.end)
-			return isPointLessY(lhs.start, rhs.start);
+			return BO_isPointLessY(lhs.start, rhs.start);
 		if(currentEvent->eventType == INTERSECTION_EVENT || lhs.end == rhs.start || lhs.start == rhs.end)
 		{
 			Line yAxis(currentEvent->currentPoint, Point(currentEvent->currentPoint.x, currentEvent->currentPoint.y+1));
@@ -94,8 +94,8 @@ struct ActiveLinesComparer
 };
 
 map<pair<int, int>, bool> checkedBefore;
-set< Line, ActiveLinesComparer > active;
-set<EventPoint*, EventPointComparer> events;
+set< Line, BO_ActiveLinesComparer > active;
+set<BO_EventPoint*, BO_EventPointComparer> events;
 set<Point> intersections;
 
 void drawSweep(float x)
@@ -109,9 +109,9 @@ void drawSweep(float x)
 	glEnd();
 	glFlush();
 }
-set<Line, ActiveLinesComparer>::iterator findActiveLine(int id)
+set<Line, BO_ActiveLinesComparer>::iterator findActiveLine(int id)
 {
-	set<Line, ActiveLinesComparer>::iterator it = active.begin();
+	set<Line, BO_ActiveLinesComparer>::iterator it = active.begin();
 	for(;it!=active.end();it++)
 		if(it->lineDrawID == id)
 			return it;
@@ -119,7 +119,7 @@ set<Line, ActiveLinesComparer>::iterator findActiveLine(int id)
 }
 void checkIntersecion(Line, Line, bool);
 
-struct LeftEndPoint : public EventPoint
+struct LeftEndPoint : public BO_EventPoint
 {
 public:
 	Line currentLine;
@@ -159,7 +159,7 @@ public:
 	}
 };
 
-struct RightEndPoint : public EventPoint
+struct RightEndPoint : public BO_EventPoint
 {
 	Line currentLine;
 	RightEndPoint(){}
@@ -189,7 +189,7 @@ struct RightEndPoint : public EventPoint
 	}
 };
 
-struct Intersection : public EventPoint
+struct Intersection : public BO_EventPoint
 {
 	Line firstLine, secondLine;
 	Intersection(){}

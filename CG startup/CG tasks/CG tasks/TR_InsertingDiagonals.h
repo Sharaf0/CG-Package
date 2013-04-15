@@ -50,9 +50,9 @@ class TR_InsertingDiagonals : public Algorithm
 		//reverse the list..
 		reverseSmartPoint(polygon, n);
 	}
-	bool isConvex(Point prev, Point p, Point next)
+	bool isConvex(SmartEdge* e)
 	{
-		return Utilities::cross2Vectors(p - prev, next - p) > 0;
+		return Utilities::cross2Vectors(e->l.start - e->prev->l.start, e->next->l.start - e->l.start) > 0;
 	}
 	SmartEdge * buildPolygon(vector<Line> inputLines)
 	{
@@ -77,7 +77,7 @@ class TR_InsertingDiagonals : public Algorithm
 		SmartEdge* j = polygon;
 		set<SmartEdge*> convexes;
 		for(int i = 0; i < n; i ++,j=j->next)
-			if(isConvex(j->prev->l.start, j->l.start, j->next->l.start))
+			if(isConvex(j))
 				convexes.insert(j);
 		return convexes;
 	}
@@ -90,7 +90,12 @@ class TR_InsertingDiagonals : public Algorithm
 		glVertex2f(l.end.x, l.end.y);
 		glEnd();
 		glFlush();
-		cout<<l.start.pointDrawID<<" "<<l.end.pointDrawID<<endl;
+	}
+	void updateVertex(SmartEdge* polygon, set<SmartEdge*>& convexes)
+	{
+		convexes.erase(polygon);
+		if(isConvex(polygon))
+			convexes.insert(polygon);
 	}
 	bool insertDiagonal(SmartEdge* polygon, set<SmartEdge*>& convexes, Line& outDiagonal)
 	{
@@ -117,22 +122,11 @@ class TR_InsertingDiagonals : public Algorithm
 			polygon->prev->next = polygon->next;
 			polygon->next->prev = polygon->prev;
 			
-			convexes.erase(polygon->next);
-			convexes.erase(polygon->prev);
 			//update neighbours
-			Point *before, *point, *after;
 			
-			before = &polygon->next->prev->l.start;
-			point  = &polygon->next->l.start;
-			after  = &polygon->next->next->l.start;
-			if(isConvex(*before,*point,*after))
-				convexes.insert(polygon->next);
-			
-			before	= &polygon->prev->prev->l.start;
-			point	= &polygon->prev->l.start;
-			after	= &polygon->prev->next->l.start;
-			if(isConvex(*before,*point,*after))
-				convexes.insert(polygon->prev);
+			updateVertex(polygon->next, convexes);
+			updateVertex(polygon->prev, convexes);
+
 			outDiagonal = Line(polygon->next->l.start, polygon->prev->l.start);
 			return true;
 		}
@@ -170,6 +164,10 @@ class TR_InsertingDiagonals : public Algorithm
 				d->next = mx, d->prev = polygonPrev;
 				mx->prev = d, polygonPrev->next = d;
 
+				updateVertex(d, convexes);	updateVertex(d->next, convexes);
+				updateVertex(t, convexes);	updateVertex(t->next, convexes);
+
+
 				outDiagonal = diagonal;
 				return true;
 			}
@@ -193,10 +191,12 @@ public:
 		{
 			if(insertDiagonal((*convexes.begin()), convexes, newDiagonal))
 			{
-				drawLine(newDiagonal);
+				//drawLine(newDiagonal);
 				outputLines.push_back(newDiagonal);
 			}
 		}
+		if(outputLines.size() != n-3)
+			MessageBox(NULL, "Wrong Triangulation", "Warning", MB_OK);
 	}
 };
 #endif

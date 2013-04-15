@@ -95,6 +95,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="SL_BentleyOttman.h" />
     <ClInclude Include="SL_BruteForce.h" />
+    <ClInclude Include="TR_MonotonePartitioning.h" />
     <ClInclude Include="TR_SubtractingEars.h" />
     <ClInclude Include="TR_TriangulateConvex.h" />
     <ClInclude Include="TR_TriangulateMonotone.h" />

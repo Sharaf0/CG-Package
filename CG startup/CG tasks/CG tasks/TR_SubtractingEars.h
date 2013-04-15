@@ -104,9 +104,11 @@ class TR_SubtractingEars : public Algorithm
 		glFlush();
 		cout<<l.start.pointDrawID<<" "<<l.end.pointDrawID<<endl;
 	}
-	Line insertDiagonal(SmartPoint* polygon, set<SmartPoint*>& ears )
+	bool insertDiagonal(SmartPoint* polygon, set<SmartPoint*>& ears, Line& outDiagonal)
 	{
 		ears.erase(polygon);//subtract ear
+		if(polygon->next->next->next == polygon)
+				return false;
 		polygon->prev->next = polygon->next;
 		polygon->next->prev = polygon->prev;
 
@@ -120,8 +122,8 @@ class TR_SubtractingEars : public Algorithm
 		if(isConvex(polygon->prev))
 			if(isEar(polygon->prev))
 				ears.insert(polygon->prev);
-		
-		return Line(polygon->next->p, polygon->prev->p);
+		outDiagonal = Line(polygon->next->p, polygon->prev->p);
+		return true;
 	}
 public:
 	TR_SubtractingEars(){}
@@ -132,12 +134,14 @@ public:
 		SmartPoint* polygon = buildPolygon(n, inputLines);
 		TransferToCounterClockWise(polygon, n);
 		set<SmartPoint*> ears = getAllEars(n, polygon);
-
+		Line l;
 		while(ears.size())
 		{
-			Line l = insertDiagonal((*ears.begin()), ears);
-			drawLine(l);
-			outputLines.push_back(l);
+			if(insertDiagonal((*ears.begin()), ears,l))
+			{
+				drawLine(l);
+				outputLines.push_back(l);
+			}
 		}
 	}
 };

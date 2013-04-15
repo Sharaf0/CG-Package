@@ -18,10 +18,11 @@
 #include "TR_SubtractingEars.h"
 #include "TR_TriangulateConvex.h"
 #include "TR_TriangulateMonotone.h"
+#include "TR_MonotonePartitioning.h"
 
 using namespace std;
 
-const int ALGORITHMS_NUM = 13;
+const int ALGORITHMS_NUM = 14;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
@@ -34,7 +35,8 @@ string algorithmsNames[] = {"CH_ExtremePoints",
 							"TR_InsertingDiagonals",
 							"TR_SubtractingEars",
 							"TR_TriangulateConvex",
-							"TR_TriangulateMonotone"
+							"TR_TriangulateMonotone",
+							"TR_MonotonePartioning"
 							};
 
 class AlgorithmFactory
@@ -68,7 +70,8 @@ public:
 			return new TR_ConvexTriangulation();
 		if(type=="TR_TriangulateMonotone")
 			return new TR_MonotoneTriangulation();
-
+		if(type=="TR_MonotonePartioning")
+			return new TR_MonotonePartitioning();
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;
