@@ -1,4 +1,4 @@
-﻿Build started 4/15/2013 3:22:32 PM.
+﻿Build started 4/18/2013 5:28:35 AM.
      1>Project "C:\Users\Sh\CG-Package\CG startup\CG tasks\CG tasks\CG tasks.vcxproj" on node 2 (rebuild target(s)).
      1>_PrepareForClean:
          Deleting file "Debug\CG tasks.lastbuildstate".
@@ -28,6 +28,12 @@
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_insertingdiagonals.h(64): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_insertingdiagonals.h(183): warning C4101: 't' : unreferenced local variable
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_subtractingears.h(68): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_triangulatemonotone.h(22): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_triangulatemonotone.h(37): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_triangulatemonotone.h(49): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_triangulatemonotone.h(70): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_triangulatemonotone.h(70): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_monotonepartitioning.h(50): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(66): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\driver.cpp(75): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -53,6 +59,7 @@
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\utilities.h(76): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\utilities.h(78): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
          Generating Code...
+     1>c:\users\sh\cg-package\cg startup\cg tasks\cg tasks\tr_monotonepartitioning.h(236): warning C4715: 'getSuitableEvent' : not all control paths return a value
        ManifestResourceCompile:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\CG tasks.exe.embed.manifest.res" "Debug\CG tasks_manifest.rc" 
        Link:
@@ -79,4 +86,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.60
+Time Elapsed 00:00:05.49
