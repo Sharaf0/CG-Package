@@ -84,12 +84,30 @@ EventType getSuitableEventType(SmartEdge* e)
 	}
 	return REGULAR_VERTEX;
 }
+float currentY;
+void drawSweep()
+{
+	glFlush();
+	glBegin(GL_LINES);
+	glColor3f(0.5,0.5,1);
+	glLineWidth(5.0);
+	glVertex2f(-10000, currentY);
+	glVertex2f(10000,  currentY);
+	glEnd();
+	glFlush();
+}
 class ActiveLineComparer
 {
 public:
 	bool operator() (SmartEdge* lhs, SmartEdge* rhs)
 	{
-		return lhs->l.start < rhs->l.start;
+		//return lhs->l.start < rhs->l.start;
+		Point lhsIntersection(INT_MAX,0), rhsIntersection(INT_MAX,1);
+		if(Utilities::computeSegmentIntersection(Point(-1000,currentY),Point(1000,currentY),lhs->l.start,lhs->l.end,lhsIntersection));
+		if(Utilities::computeSegmentIntersection(Point(-1000,currentY),Point(1000,currentY),rhs->l.start,rhs->l.end,rhsIntersection));
+		if(fabs(lhsIntersection.x - rhsIntersection.x) < 1e-3)
+			return lhs->l.lineDrawID < rhs->l.lineDrawID;
+		return lhsIntersection.x < rhsIntersection.x;
 	}
 };
 struct Event
@@ -242,6 +260,7 @@ void printStatus(Event* currentEvent, set<SmartEdge*, ActiveLineComparer> active
 	cout<<"Active Lines:"<<endl;
 	for(set<SmartEdge*, ActiveLineComparer>::iterator it = activeLines.begin(); it != activeLines.end(); it++)
 		cout<<(*it)->l.lineDrawID<<" -> "<<helpers[(*it)]->l.lineDrawID <<endl;
+	//drawSweep();
 }
 class TR_MonotonePartitioning : public Algorithm
 {
@@ -272,8 +291,10 @@ public:
 		map<SmartEdge*, SmartEdge*> helpers;
 		while(events.size())
 		{
-			events.top()->handleTransition(activeLines, helpers, outputLines);
+			currentY = events.top()->eventLine->l.start.y;
 			//printStatus(events.top(), activeLines, helpers);
+			events.top()->handleTransition(activeLines, helpers, outputLines);
+			printStatus(events.top(), activeLines, helpers);
 			events.pop();
 		}
 	}
