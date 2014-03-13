@@ -10,3 +10,10 @@
 *.pdb
 *.obj
 *.ipch
+*.filters
+*.user
+*.unsuccessfulbuild
+*.lastbuildstate
+*.manifest
+*.rc
+*.ilk
