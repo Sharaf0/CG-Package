@@ -19,7 +19,7 @@ struct BO_EventPoint
 {
 public:
 	Point currentPoint;
-	BO_EVENT_TYPE eventType;//used to sort
+	BO_EVENT_TYPE eventType;
 	int id;
 	static int eventID;
 	virtual void handleTransition() = 0;

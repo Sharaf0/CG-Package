@@ -72,7 +72,7 @@ void writeLine(const Line& l)
 	if(!l.lineDrawID)return;
 	char str[10];
 	glRasterPos2f(l.start.x+POINT_SIZE,l.start.y+POINT_SIZE);
-	sprintf(str, "%d", l.lineDrawID);
+	//sprintf(str, "%d", l.lineDrawID);
 	for(unsigned i = 0; i < strlen(str); i ++)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
 }
@@ -91,7 +91,7 @@ void drawPoints(const vector<Point>& points, float r, float g, float b)
 	for(unsigned i = 0; i < points.size(); i ++)
 	{
 		glColor3f(r, g, b);
-		writePoint(points[i]);
+		//writePoint(points[i]);
 	}
 	glFlush();
 }
@@ -106,7 +106,7 @@ void drawLines(const vector<Line>& lines, float r, float g, float b)
 		glVertex2f(lines[i].start.x, lines[i].start.y);
 		glVertex2f(lines[i].end.x, lines[i].end.y);
 		glEnd();
-		writeLine(lines[i]);
+		//writeLine(lines[i]);
 	}
 }
 
@@ -222,6 +222,26 @@ void processMouseMove(int x, int y)
 		return;
 	}
 }
+void processPassiveMouseMove(int x, int y)
+{
+	int wx = x;
+	int wy = height - y;
+
+	char Tilte[50];
+	sprintf(Tilte, "Geometry Package : x = %d y = %d", wx, wy);
+	glutSetWindowTitle(Tilte);
+}
+bool isConvex(vector<Point> v)
+{
+	int n = v.size();
+	for(int i = 0; i <= n-1; i ++)
+	{
+		bool isRight = Utilities::cross2Vectors(v[(i+1)%n]-v[i], v[(i+2)%n]-v[(i+1)%n])<0;
+		if(isRight)
+			return false;
+	}
+	return true;
+}
 /**
 Handles the keyboard press event. This event is triggered whenever any keyboard
 key is pressed.
@@ -253,6 +273,20 @@ void processKeyboard(unsigned char key, int x, int y)
 		MY_DRAWING_MODE = NONE;
 		OnDisplay();
 	}
+	if(key == 'c')
+	{
+		vector<Point> bb;
+		for(int i = 0; i < inLines.size(); i ++)
+		{
+			bb.push_back(inLines[i].start);
+		}
+
+		if(isConvex(bb))
+			MessageBox(NULL, "YES", "Warning", MB_OK);
+		else
+			MessageBox(NULL, "NO", "Warning", MB_OK);
+	}
+
 	if(key == 27)//Escape
 	{
 		OnDisplay();
@@ -274,10 +308,10 @@ void reshape(int newWidth, int newHeight)
 }
 void selectDrawingMode(int choice)
 {
-	if(MY_DRAWING_MODE == NONE || choice == MY_DRAWING_MODE)
+	//if(MY_DRAWING_MODE == NONE || choice == MY_DRAWING_MODE)
 		MY_DRAWING_MODE = (DRAWING_MODES)choice;
-	else
-		MessageBox(NULL, "Clear First", "Warning", MB_OK);
+	//else
+	//	MessageBox(NULL, "Clear First", "Warning", MB_OK);
 }
 void openFileType(int choice)
 {
@@ -455,6 +489,7 @@ void InitGraphics(int argc, char *argv[]) {
 	glutDisplayFunc(OnDisplay);
 	glutMouseFunc(processMouse);
 	glutMotionFunc(processMouseMove);
+	glutPassiveMotionFunc(processPassiveMouseMove);
 	glutKeyboardFunc(processKeyboard);
 	initMenus();
 	//initially drawing mode is none

@@ -4,18 +4,63 @@
 #include "Algorithm.h"
 class TR_MonotoneTriangulation : public Algorithm
 {
+private:
+
+
 public:
 	TR_MonotoneTriangulation(){}
-	Point getNext(Point p, vector<Line> v, map<Point,bool> m)
+
+	bool Equals(Line l1, Line l2)
 	{
-		return Point();
+		return (l1.start == l2.start && l1.end == l2.end)
+			|| (l1.end == l2.start && l1.start == l2.end);
 	}
-	float crossProduct(Point a, Point b, Point c)
+
+	Point getNext(Point p, vector <Line>  lines, map<Point, bool>& visited)
 	{
-		return 0.0;
+		vector <Point> res;
+		for(int i=0; i<lines.size(); i++)
+		{
+			if(lines[i].start == p && visited[lines[i].end] == false)
+			{
+				res.push_back(lines[i].end);
+
+			}
+			if(lines[i].end == p && visited[lines[i].start] == false)
+			{
+				res.push_back(lines[i].start);
+
+			}
+		}
+
+		if(res.size() == 2) // this case will be true only for first call
+		{
+			if ( res[0] > res[1] )
+			{
+				visited[res[0]] = true;
+				return res[0];
+			}
+			else
+			{
+				visited[res[1]] = true;
+				return res[1];
+			}
+		}
+		visited[res[0]] = true;
+		return res[0];
 	}
-	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines, vector<Point>& outputPoints, vector<Line>& outputLines)
+
+
+	void run(const vector<Point>& inputPoints_, const vector<Line>& inputLines, vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
+		vector<Point>  inputPoints;
+		for (int i = 0 ; i < inputLines.size() ; i++)
+		{
+			inputPoints.push_back(Point(inputLines[i].start));
+		}
+
+		//unique(inputPoints.begin(), inputPoints.end());
+
 		int minpointIndex = 1000;
 		int minPointY = 1000;
 
@@ -43,7 +88,7 @@ public:
 
 		vector <Point> R, L;
 		int i;
-		for(i=0; sortedPoints[i].y <= sortedPoints[i+1].y; i++)
+		for(i=0; sortedPoints[i].y < sortedPoints[i+1].y; i++)
 			R.push_back(sortedPoints[i]);
 
 		for(; i<sortedPoints.size(); i++)
@@ -67,10 +112,10 @@ public:
 			right = false;
 		}
 
-		while(LI < L.size() && RI < R.size())
+		while(LI < L.size() || RI < R.size())
 		{
 			// insert new point
-			if(R[RI].y < L[LI].y)
+			if(RI<R.size() && R[RI].y < L[LI].y)
 			{
 				q.push_back(R[RI++]);
 				if(right == false) // i was Left
@@ -86,16 +131,16 @@ public:
 				}
 				else // R series, same series
 				{
-					while(q.size() > 2 && crossProduct(q[q.size()-1], q[q.size()-2], q[q.size()-3])) // TODO: replace crossProduct
+					while(q.size() > 2 && (Utilities::crossProduct (q[q.size()-3], q[q.size()-2], q[q.size()-1])>0 ))
 					{
 						outputLines.push_back( Line(q[q.size()-1], q[q.size()-3]));
 						q.erase(q.begin()+q.size()-2);
 					}
 				}
 			}
-			else 
+			else if(LI < L.size())// new point is L
 			{
-				q.push_back(L[LI++]); // new point is L
+				q.push_back(L[LI++]); 
 				if(right == true) // if i was R
 				{
 					// wassal el new point be kol elly fel q
@@ -104,13 +149,12 @@ public:
 						outputLines.push_back( Line(q[q.size()-1], q[0]));
 						q.erase(q.begin());
 					}
-					outputLines.push_back(Line(q[q.size()-1], q[0
-					]));
+					outputLines.push_back(Line(q[q.size()-1], q[0]));
+					right = false;
 				}
 				else // L series, same series
 				{
-					while(q.size() > 2 &&((right&& crossProduct (q[q.size()-3], q[q.size()-2], q[q.size()-1])<0 )||
-						(!right&& crossProduct (q[q.size()-3], q[q.size()-2], q[q.size()-1])>0 ))) // TODO: replace crossProduct
+					while(q.size() > 2 && (Utilities::crossProduct (q[q.size()-3], q[q.size()-2], q[q.size()-1])<0 )) // TODO: replace crossProduct
 					{
 						outputLines.push_back( Line(q[q.size()-1], q[q.size()-3]));
 						q.erase(q.begin()+q.size()-2);
@@ -118,6 +162,14 @@ public:
 				}
 			}    
 		}
+
+		for(int i=0; i<outputLines.size(); i++)
+		{
+			for(int j=0; j<inputLines.size(); j++)
+				if(Equals(outputLines[i], inputLines[j]))
+					outputLines.erase(outputLines.begin()+i);
+		}
 	}
+
 };
 #endif

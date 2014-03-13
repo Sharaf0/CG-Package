@@ -24,19 +24,19 @@ public:
 	{
 		return p1.x*p2.x+p1.y*p2.y;
 	}
-	static float magnitude		(const Point& p)
+	static float magnitude(const Point& p)
 	{
 		return hypot(p.x,p.y);
 	}
-	static Point normalize		(const Point& p)
+	static Point normalize(const Point& p)
 	{
 		return p/magnitude(p);
 	}
-	static float crossProduct	(const Point& p1, const Point& p2, const Point& p3)
+	static float crossProduct(const Point& p1, const Point& p2, const Point& p3)
 	{
 		return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 	}
-	static float cross2Vectors	(const Point& a, const Point& b)
+	static float cross2Vectors(const Point& a, const Point& b)
 	{
 		return a.x*b.y - a.y*b.x;
 	}
@@ -57,15 +57,20 @@ public:
 		b3 = f3<0.0f;
 		return ((b1 == b2) && (b2 == b3));
 	}
-	static float getAngle2Vectors	 (const Point& a, const Point& b, const Point& p, const Point& q)
+	static float getAngle2Vectors(const Point& a, const Point& b, const Point& p, const Point& q)
 	{
 		Point v1 = Point(b.x-a.x,b.y-a.y);
 		Point v2 = Point(q.x-p.x,q.y-p.y);
 		//Todo: Handle Zero Division
-		float t = (v1.x*v2.x + v1.y*v2.y)/(hypot(v1.x,v1.y)*hypot(v2.x,v2.y));
-		return acos( t )*(180/PI);
+		//float t = ((v1.x*v2.y) - (v1.y*v2.x))/(hypot(v1.x, v1.y)*hypot(v2.x, v2.y));
+		//return ((asin( t ) * 180)/PI);
+
+		float DotProduct = Utilities::dot2Vectors(v1, v2);
+		float CrossProduct = Utilities::cross2Vectors(v1, v2);
+
+		return atan2f(CrossProduct, DotProduct) * (180/PI);
 	}
-	static float getAngle2Vectors	 (const Line& v1, const Line& v2)
+	static float getAngle2Vectors(const Line& v1, const Line& v2)
 	{
 		return getAngle2Vectors(v1.start,v1.end,v2.start,v2.end);
 	}
@@ -95,11 +100,11 @@ public:
 		{
 			if (dist2(a, c) < EPS || dist2(a, d) < EPS ||
 				dist2(b, c) < EPS || dist2(b, d) < EPS)
-					return true;
+				return true;
 			if (dot2Vectors(c-a, c-b) > 0 &&
 				dot2Vectors(d-a, d-b) > 0 &&
 				dot2Vectors(c-b, d-b) > 0)
-					return false;
+				return false;
 			return true;
 		}
 		if (cross2Vectors(d-a, b-a) * cross2Vectors(c-a, b-a) > 0) return false;
@@ -128,9 +133,9 @@ public:
 	}
 	static bool pointOnSegment(const Point& a, const Point& b, const Point& p)
 	{
-        if (a == b)
-                return a==p;
-        return pointOnRay(a, b, p) && pointOnRay(b, a, p);
+		if (a == b)
+			return a==p;
+		return pointOnRay(a, b, p) && pointOnRay(b, a, p);
 	}
 };
 struct AngleComparer

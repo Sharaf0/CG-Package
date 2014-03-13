@@ -13,16 +13,21 @@
 //Sweep Line
 #include "SL_BentleyOttman.h"
 #include "SL_BruteForce.h"
+#include "SL_BruteForce_Parallel.h"
 //Triangulation
 #include "TR_InsertingDiagonals.h"
 #include "TR_SubtractingEars.h"
 #include "TR_TriangulateConvex.h"
 #include "TR_TriangulateMonotone.h"
 #include "TR_MonotonePartitioning.h"
-
+//PointLocation
+#include "PL_SlabDecomposition.h"
+//Voronoi
+#include "Vor_Incremental.h"
+#include "Vor_BruteForce.h"
 using namespace std;
 
-const int ALGORITHMS_NUM = 14;
+const int ALGORITHMS_NUM = 18;
 string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_JarvisMarch",
 							"CH_ExtremeSegments",
@@ -32,11 +37,15 @@ string algorithmsNames[] = {"CH_ExtremePoints",
 							"CH_DivideAndConquer",
 							"SL_BentleyOttman",
 							"SL_BruteForce",
+							"SL_BruteForceParallel",
 							"TR_InsertingDiagonals",
 							"TR_SubtractingEars",
 							"TR_TriangulateConvex",
 							"TR_TriangulateMonotone",
-							"TR_MonotonePartioning"
+							"TR_MonotonePartioning",
+							"PL_SlabDecomposition",
+							"Vor_Incremental",
+							"Vor_BruteForce"
 							};
 
 class AlgorithmFactory
@@ -62,6 +71,8 @@ public:
 			return new SL_BentleyOttman();
 		if(type=="SL_BruteForce")
 			return new SL_BruteForce();
+		if(type=="SL_BruteForceParallel")
+			return new SL_BruteForce_Parallel();
 		if(type=="TR_InsertingDiagonals")
 			return new TR_InsertingDiagonals();
 		if(type=="TR_SubtractingEars")
@@ -72,6 +83,12 @@ public:
 			return new TR_MonotoneTriangulation();
 		if(type=="TR_MonotonePartioning")
 			return new TR_MonotonePartitioning();
+		if(type=="PL_SlabDecomposition")
+			return new PL_SlabDecomposition();
+		if(type=="Vor_Incremental")
+			return new VOR_Incremental();
+		if(type=="Vor_BruteForce")
+			return new VOR_BruteForce();
 		else
 		{
 			//std::cerr<<"Can't find such type"<<endl;

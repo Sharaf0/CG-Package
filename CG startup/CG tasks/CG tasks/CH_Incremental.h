@@ -39,11 +39,20 @@ public:
 	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines,
 		vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
-		outputPoints.clear(), outputLines.clear();
 		vector<Point> input = inputPoints;
+		sort(input.begin(),input.end());
+		input.resize(unique(input.begin(),input.end())-input.begin());
 
 		if(input.size()<3)
+		{
+			if(input.size()==2)
+			{
+				outputPoints.push_back(input.front());
+				outputPoints.push_back(input.back());
+				outputLines.push_back(Line(input.front(), input.back()));
+			}
 			return;
+		}
 
 		int n = input.size();
 

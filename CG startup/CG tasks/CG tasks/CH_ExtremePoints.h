@@ -13,9 +13,18 @@ public:
 		vector<Point> input = inputPoints;
 		sort(input.begin(),input.end());
 		input.resize(unique(input.begin(),input.end())-input.begin());
-		if(input.size()<3)return;
 
-		outputPoints.clear(), outputLines.clear();
+		if(input.size()<3)
+		{
+			if(input.size()==2)
+			{
+				outputPoints.push_back(input.front());
+				outputPoints.push_back(input.back());
+				outputLines.push_back(Line(input.front(), input.back()));
+			}
+			return;
+		}
+
 		for(unsigned i = 0; i < input.size(); i ++)
 		{
 			bool in = false;

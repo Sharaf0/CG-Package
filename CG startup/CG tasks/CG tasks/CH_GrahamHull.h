@@ -20,12 +20,20 @@ public:
 	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines,
 		vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
-		outputPoints.clear(), outputLines.clear();
-
 		vector<Point> input = inputPoints;
 		sortAntiClockWise(input);
 		input.resize(unique(input.begin(),input.end())-input.begin());
-		if(input.size()<3)return;
+		if(input.size()<3)
+		{
+			if(input.size()==2)
+			{
+				outputPoints.push_back(input.front());
+				outputPoints.push_back(input.back());
+				outputLines.push_back(Line(input.front(), input.back()));
+			}
+			return;
+		}
+		
 		outputPoints.push_back(input[0]);
 		outputPoints.push_back(input[1]);
 		for (unsigned i = 2; i <= input.size(); i++)

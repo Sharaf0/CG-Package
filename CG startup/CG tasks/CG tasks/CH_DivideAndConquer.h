@@ -162,12 +162,22 @@ public:
 	void run(const vector<Point>& inputPoints, const vector<Line>& inputLines,
 		vector<Point>& outputPoints, vector<Line>& outputLines)
 	{
-		list<Point> input;
 		vector<Point> inVector = inputPoints;
-		sort(inVector.begin(), inVector.end());
+		sort(inVector.begin(),inVector.end());
 		inVector.resize(unique(inVector.begin(),inVector.end())-inVector.begin());
-		if(inVector.size() < 3)
+
+		if(inVector.size()<3)
+		{
+			if(inVector.size()==2)
+			{
+				outputPoints.push_back(inVector.front());
+				outputPoints.push_back(inVector.back());
+				outputLines.push_back(Line(inVector.front(), inVector.back()));
+			}
 			return;
+		}
+
+		list<Point> input;
 		for(unsigned i = 0; i < inVector.size(); i ++)
 			input.push_back(inVector[i]);
 		list<Point> output = getConvex(input);
