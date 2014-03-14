@@ -2,15 +2,12 @@
 *.sdf
 *.sln
 *.suo
-*.vcxproj
-*.vcxproj.filters
 *.vcxproj.user
 *.tlog
 *.log
 *.pdb
 *.obj
 *.ipch
-*.filters
 *.user
 *.unsuccessfulbuild
 *.lastbuildstate
